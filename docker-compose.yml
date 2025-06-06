@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-php83-apache
+    container_name: laravel-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5173:5173"
+    volumes:
+      - ./src/tiendita:/var/www/html
+    environment:
+      - APP_ENV=local
+      - COMPOSER_ALLOW_SUPERUSER=1
+    depends_on:
+      - db
+    networks:
+      - laravel-net
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ALLOW_PUBLIC_KEY_RETRIEVAL: 'true'
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - laravel-net
+
+networks:
+  laravel-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
