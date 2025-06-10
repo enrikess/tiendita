@@ -13,6 +13,26 @@ interface Props extends PrimitiveProps {
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })
+
+// Definimos los eventos que este componente puede emitir
+const emit = defineEmits(['click', 'hover', 'focus', 'blur'])
+
+// Manejadores de eventos que emitirán al componente padre
+const handleClick = (event: MouseEvent) => {
+  emit('click', event)
+}
+
+const handleHover = (event: MouseEvent) => {
+  emit('hover', event)
+}
+
+const handleFocus = (event: FocusEvent) => {
+  emit('focus', event)
+}
+
+const handleBlur = (event: FocusEvent) => {
+  emit('blur', event)
+}
 </script>
 
 <template>
@@ -21,6 +41,10 @@ const props = withDefaults(defineProps<Props>(), {
     :as="as"
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"
+    @click="handleClick"
+    @mouseover="handleHover"
+    @focus="handleFocus"
+    @blur="handleBlur"
   >
     <slot />
   </Primitive>
