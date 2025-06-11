@@ -62,12 +62,12 @@ return [
     'providers' => [
         'usuario' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Usuario::class),
+            'model' => env('AUTH_MODEL', App\Models\SisUsuario::class),
         ],
 
         // 'usuario' => [
         //     'driver' => 'database',
-        //     'table' => 'usuario',
+        //     'table' => 'sis_usuarios',
         // ],
     ],
 

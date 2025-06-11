@@ -1,26 +1,35 @@
+// 0. Tabla de tipos de documento
+Table sis_tipo_documentos{
+  id int [pk, increment]
+  nombre varchar(50) [not null]
+  abreviatura varchar(50)
+  estado boolean [default: true]
+}
 
-// 0. Tabla de persona del sistema
-Table usuarios {
+// 1. Tabla de persona del sistema
+Table sis_persona {
   id integer [pk, increment]
   nombre varchar(50) [not null]
   ape_paterno varchar(50) [not null]
   ape_materno varchar(50) [not null]
   correo varchar(50) [not null]//
+  tipo_documento int  [ref: > sis_tipo_documentos.id]
+  numero_documento varchar(20) 
   telefono varchar
   estado boolean [default: true]
-  usuario_creo int  [ref: > usuarios.id]
+  usuario_creo int  [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int  [ref: > usuarios.id]
+  usuario_modifico int  [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int  [ref: > usuarios.id]
+  usuario_elimino int  [ref: > sis_usuarios.id]
   motivo_elimino varchar(50) 
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]  
 }
 
 
-// 1. Tabla de usuarios del sistema
-Table usuarios {
+// 2. Tabla de usuarios del sistema
+Table sis_usuarios {
   id integer [pk, increment]//
   name varchar(50) [not null]//
   email varchar(50) [not null]
@@ -28,8 +37,8 @@ Table usuarios {
   email_verified_at varchar(50) [not null]
 }
 
-// 2. Tabla de proveedores
-Table proveedores {
+// 3. Tabla de proveedores
+Table com_proveedores {
   id int [pk, increment]
   ruc varchar(20) [unique, not null]
   razon_social varchar(100) [not null]
@@ -39,20 +48,20 @@ Table proveedores {
   email varchar(100)
   persona_contacto varchar(100)
   estado boolean [default: true]
-  usuario_creo int [ref: > usuarios.id]
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int  [ref: > usuarios.id]
+  usuario_modifico int  [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int  [ref: > usuarios.id]
-  motivo_elimino varchar  [ref: > usuarios.id]
+  usuario_elimino int  [ref: > sis_usuarios.id]
+  motivo_elimino varchar(100)
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
-// 3. Tabla de clientes
-Table clientes {
+// 4. Tabla de clientes
+Table ven_clientes {
   id int [pk, increment]
-  tipo_documento int  [ref: > tipo_documento.id]
+  tipo_documento int  [ref: > sis_tipo_documentos.id]
   numero_documento varchar(20)
   nombres varchar(100)
   apellidos varchar(100)
@@ -61,20 +70,12 @@ Table clientes {
   telefono varchar(20)
   email varchar(100)
   estado boolean [default: true]
-  usuario_creo int [ref: > usuarios.id]
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
-// 4. Tabla de tipos de documento
-Table tipo_documento{
-  id int [pk, increment]
-  nombre varchar(50) [not null]
-  abreviatura varchar(50)
-  estado boolean [default: true]
-}
-
 // 5. Tabla de categorías
-Table categorias {
+Table inv_categorias {
   id integer [pk, increment]
   nombre varchar [not null]
   descripcion varchar
@@ -82,27 +83,27 @@ Table categorias {
 }
 
 // 6. Tabla de subcategorías
-Table subcategorias {
+Table inv_subcategorias {
   id integer [pk, increment]
-  categoria_id int [ref: > categorias.id]
+  categoria_id int [ref: > inv_categorias.id]
   nombre varchar [not null]
   descripcion varchar
   estado boolean [default: true]
 }
 
 // 7. Tabla de ubicaciones
-Table ubicaciones {
+Table inv_ubicaciones {
   id int [pk, increment]
   nombre varchar(100) [not null]
   tipo enum('ALMACEN', 'TIENDA') [not null]
   direccion varchar(200)
   telefono varchar(20)
-  encargado_id int [ref: > usuarios.id]
+  encargado_id int [ref: > sis_usuarios.id]
   estado boolean [default: true]
 }
 
 // 8. Tabla de unidades de medida
-Table unidad_medidas{
+Table inv_unidad_medidas{
   id int [pk, increment]
   nombre varchar(50)
   abreviatura varchar(10)
@@ -110,76 +111,76 @@ Table unidad_medidas{
 }
 
 // 9. Tabla de marcas
-Table marcas{
+Table inv_marcas{
   id int [pk, increment]
   nombre varchar(50)
   estado boolean [default: true]
 }
 
 // 10. Tabla de productos
-Table productos {
+Table inv_productos {
   id int [pk, increment]
   codigo varchar
   codigo_barras varchar [unique]
   nombre varchar(100)
   descripcion text
-  categoria_id int [ref: > categorias.id]
-  subcategoria_id int [ref: > subcategorias.id]
-  unidad_medida_id int [ref: > unidad_medidas.id]
-  marca_id int [ref: > marcas.id]
+  categoria_id int [ref: > inv_categorias.id]
+  subcategoria_id int [ref: > inv_subcategorias.id]
+  unidad_medida_id int [ref: > inv_unidad_medidas.id]
+  marca_id int [ref: > inv_marcas.id]
   precio_venta decimal(10,2)
   estado boolean [default: true]
-  usuario_creo int [ref: > usuarios.id]
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int  [ref: > usuarios.id]
+  usuario_modifico int  [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int  [ref: > usuarios.id]
-  motivo_elimino varchar  [ref: > usuarios.id]
+  usuario_elimino int  [ref: > sis_usuarios.id]
+  motivo_elimino varchar(100)
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
 // 11. Tabla de historial de precios
-Table precio_historicos {
+Table inv_precio_historicos {
   id int [pk, increment]
-  id_producto int [ref: > productos.id] 
+  id_producto int [ref: > inv_productos.id] 
   precio_venta decimal
   fecha_inicio timestamp [default: `CURRENT_TIMESTAMP`]
   fecha_final timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
 // 12. Tabla de lotes de productos
-Table lote_productos{
+Table inv_lote_productos{
   id int [pk, increment]
-  producto_id int [ref: > productos.id]
+  producto_id int [ref: > inv_productos.id]
   cantidad decimal(10,2)
   fecha_vencimiento date
   estado boolean [default: true]
-  usuario_creo int  [ref: > usuarios.id]
+  usuario_creo int  [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int  [ref: > usuarios.id]
+  usuario_modifico int  [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int [ref: > usuarios.id]
+  usuario_elimino int [ref: > sis_usuarios.id]
   motivo_elimino varchar(50) 
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
 // 13. Tabla de stock en tienda
-Table stocks_tienda {
-  producto_id int [ref: > productos.id]
+Table stk_stocks_tienda {
+  producto_id int [ref: > inv_productos.id]
   cantidad decimal(10,2) 
 }
 
 // 14. Tabla de stock en almacén detallado
-Table stocks_almacen_detallado {
-  producto_id int [ref: > productos.id]
-  lote_id int [ref: > lote_productos.id]
+Table stk_stocks_almacen_detallado {
+  producto_id int [ref: > inv_productos.id]
+  lote_id int [ref: > inv_lote_productos.id]
   cantidad decimal(10,2) 
 }
 
 // 15. Tabla de tipos de movimientos
-Table tipo_movimientos {
+Table mov_tipo_movimientos {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // ENTRADA, SALIDA, etc.
   nombre varchar(100) [not null]
@@ -189,7 +190,7 @@ Table tipo_movimientos {
 }
 
 // 16. Tabla de parámetros de IGV
-Table parametros_igv {
+Table cfg_parametros_igv {
   id int [pk, increment]
   porcentaje decimal(5,2)  
   fecha_inicio date        
@@ -198,7 +199,7 @@ Table parametros_igv {
 }
 
 // 17. Tabla de tipos de referencia
-Table referencia_tipos {
+Table cfg_referencia_tipos {
   id int [pk, increment]
   codigo varchar(30) [unique, not null] // compra, venta, merma, ajuste, transferencia, etc.
   nombre varchar(100) [not null] // Nombre descriptivo
@@ -207,7 +208,7 @@ Table referencia_tipos {
 }
 
 // 18. Tabla de correlativos
-Table correlativos {
+Table cfg_correlativos {
   id int [pk, increment]
   tipo_documento varchar(20) [not null] // Ej: 'compra', 'venta', 'boleta', 'factura'
   serie varchar(10) [not null, default: '001']
@@ -218,45 +219,45 @@ Table correlativos {
 }
 
 // 19. Tabla de movimientos
-Table movimientos{
+Table mov_movimientos{
   id int [pk, increment]
   numero_movimiento varchar(20) [unique] // MOV-2025-00001
-  tipo_movimiento_id int [ref: > tipo_movimientos.id]
-  referencia_tipo_id int [ref: > referencia_tipos.id]
-  ubicacion_origen_id int [ref: > ubicaciones.id, null]
-  ubicacion_destino_id int [ref: > ubicaciones.id, null]
+  tipo_movimiento_id int [ref: > mov_tipo_movimientos.id]
+  referencia_tipo_id int [ref: > cfg_referencia_tipos.id]
+  ubicacion_origen_id int [ref: > inv_ubicaciones.id, null]
+  ubicacion_destino_id int [ref: > inv_ubicaciones.id, null]
   cantidad decimal(10,2)
   subtotal_movimiento decimal(10,2) // Suma de subtotales del detalle
   igv_total decimal(10,2) // Suma de IGV del detalle
   total_movimiento decimal(10,2) // subtotal + igv_total
   fecha_movimiento timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_creo int [ref: > usuarios.id]
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int [ref: > usuarios.id]
+  usuario_modifico int [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int [ref: > usuarios.id]
+  usuario_elimino int [ref: > sis_usuarios.id]
   motivo_elimino varchar(50)
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]
   estado boolean [default: true] 
 }
 
 // 20. Tabla de detalle de movimientos
-Table detalle_movimientos {
+Table mov_detalle_movimientos {
   id int [pk, increment]
-  movimiento_id int [ref: > movimientos.id]
-  producto_id int [ref: > productos.id]
-  lote_producto_id int [ref: > lote_productos.id]
+  movimiento_id int [ref: > mov_movimientos.id]
+  producto_id int [ref: > inv_productos.id]
+  lote_producto_id int [ref: > inv_lote_productos.id]
   cantidad decimal(10,2)
   precio_unitario decimal(10,2)
-  igv_porcentaje decimal(5,2) [ref: > parametros_igv.porcentaje]
+  igv_porcentaje decimal(5,2) [ref: > cfg_parametros_igv.porcentaje]
   igv_monto decimal(10,2)
   subtotal decimal(10,2) // cantidad * precio_unitario
   total decimal(10,2) // subtotal + igv_monto
 }
 
 // 21. Tabla de estados de compras
-Table estado_compras {
+Table com_estado_compras {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // PENDIENTE, RECIBIDO, ANULADO, etc.
   nombre varchar(50) [not null]         // Nombre descriptivo
@@ -265,7 +266,7 @@ Table estado_compras {
 }
 
 // 22. Tabla de métodos de pago
-Table metodos_pago {
+Table fin_metodos_pago {
   id int [pk, increment]
   nombre varchar(50) [not null] // Efectivo, Transferencia, Tarjeta, etc.
   descripcion varchar(100)
@@ -273,31 +274,31 @@ Table metodos_pago {
 }
 
 // 23. Tabla de compras
-Table compras {
+Table com_compras {
   id int [pk, increment]
   numero_compra varchar(20) [unique, not null] // Ej: COMP-2025-00001
-  proveedor_id int [ref: > proveedores.id]
+  proveedor_id int [ref: > com_proveedores.id]
   fecha_compra timestamp [default: `CURRENT_TIMESTAMP`]
   subtotal decimal(10,2)
   igv_total decimal(10,2)
   total decimal(10,2)
-  estado_compra_id int [ref: > estado_compras.id] // Relación al estado
-  usuario_creo int [ref: > usuarios.id]
+  estado_compra_id int [ref: > com_estado_compras.id] // Relación al estado
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int [ref: > usuarios.id]
+  usuario_modifico int [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int [ref: > usuarios.id]
+  usuario_elimino int [ref: > sis_usuarios.id]
   motivo_elimino varchar(100)
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
 // 24. Tabla de detalle de compras
-Table detalle_compras {
+Table com_detalle_compras {
   id int [pk, increment]
-  compra_id int [ref: > compras.id]
-  producto_id int [ref: > productos.id]
-  lote_producto_id int [ref: > lote_productos.id, null]
+  compra_id int [ref: > com_compras.id]
+  producto_id int [ref: > inv_productos.id]
+  lote_producto_id int [ref: > inv_lote_productos.id, null]
   cantidad decimal(10,2)
   precio_unitario decimal(10,2)
   igv_porcentaje decimal(5,2)
@@ -307,7 +308,7 @@ Table detalle_compras {
 }
 
 // 25. Tabla de estados de ventas
-Table estado_ventas {
+Table ven_estado_ventas {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // 'PENDIENTE', 'PAGADO', 'ANULADO'
   nombre varchar(50) [not null]         // Nombre descriptivo
@@ -316,31 +317,31 @@ Table estado_ventas {
 }
 
 // 26. Tabla de ventas
-Table ventas {
+Table ven_ventas {
   id int [pk, increment]
   numero_venta varchar(20) [unique, not null] // Ej: VENTA-2025-00001
-  cliente_id int [ref: > clientes.id, null]
+  cliente_id int [ref: > ven_clientes.id, null]
   fecha_venta timestamp [default: `CURRENT_TIMESTAMP`]
   subtotal decimal(10,2)
   igv_total decimal(10,2)
   total decimal(10,2)
-  metodo_pago_id int [ref: > metodos_pago.id]
-  estado int [ref: > estado_compras.id]
-  usuario_creo int [ref: > usuarios.id]
+  metodo_pago_id int [ref: > fin_metodos_pago.id]
+  estado int [ref: > ven_estado_ventas.id]
+  usuario_creo int [ref: > sis_usuarios.id]
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
-  usuario_modifico int [ref: > usuarios.id]
+  usuario_modifico int [ref: > sis_usuarios.id]
   fecha_modifico timestamp [default: `CURRENT_TIMESTAMP`]
   eliminado boolean [default: false]
-  usuario_elimino int [ref: > usuarios.id]
+  usuario_elimino int [ref: > sis_usuarios.id]
   motivo_elimino varchar(100)
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
 // 27. Tabla de detalle de ventas
-Table detalle_ventas {
+Table ven_detalle_ventas {
   id int [pk, increment]
-  venta_id int [ref: > ventas.id]
-  producto_id int [ref: > productos.id]
+  venta_id int [ref: > ven_ventas.id]
+  producto_id int [ref: > inv_productos.id]
   cantidad decimal(10,2)
   precio_unitario decimal(10,2)
   igv_porcentaje decimal(5,2)
@@ -350,13 +351,13 @@ Table detalle_ventas {
 }
 
 // 28. Tabla de kardex
-Table kardex {
+Table rep_kardex {
   id int [pk, increment]
-  producto_id int [ref: > productos.id]
-  lote_producto_id int [ref: > lote_productos.id, null] // Opcional
-  ubicacion_id int [ref: > ubicaciones.id] // Ubicación donde ocurre el movimiento
+  producto_id int [ref: > inv_productos.id]
+  lote_producto_id int [ref: > inv_lote_productos.id, null] // Opcional
+  ubicacion_id int [ref: > inv_ubicaciones.id] // Ubicación donde ocurre el movimiento
   fecha timestamp [default: `CURRENT_TIMESTAMP`]
-  tipo_movimiento_id int [ref: > tipo_movimientos.id]
+  tipo_movimiento_id int [ref: > mov_tipo_movimientos.id]
   documento_referencia varchar(30)
   detalle varchar(100)
   cantidad_inicial decimal(10,2)
@@ -368,13 +369,11 @@ Table kardex {
   cantidad_final decimal(10,2)
   valor_final decimal(10,2)
   costo_unitario decimal(10,2)
-  usuario_id int [ref: > usuarios.id]
+  usuario_id int [ref: > sis_usuarios.id]
   fecha_vencimiento date [null]
   observaciones varchar(200)
-  referencia_tipo_id int [ref: > referencia_tipos.id, null]
+  referencia_tipo_id int [ref: > cfg_referencia_tipos.id, null]
 }
-
-
 
 
 
@@ -403,3 +402,16 @@ Métodos de pago.⚙️
 Reportes de ventas, compras, inventario, productos más vendidos, movimientos de caja, etc.⚙️
 9. Módulo de Configuración
 Parámetros generales del sistema (impuestos, correlativos, datos de la tienda, etc.).⚙️
+
+
+Prefijo	Módulo	Ámbito
+sis_	Sistema base	Tablas del sistema, usuarios, permisos
+inv_	Inventario	Productos, categorías, lotes, marcas
+stk_	Stock	Control de existencias y ubicaciones
+mov_	Movimientos	Movimientos internos de inventario
+com_	Compras	Procesos de adquisición y proveedores
+ven_	Ventas	Procesos de venta y clientes
+fin_	Finanzas	Pagos, cajas, contabilidad
+log_	Logística	Rutas, entregas, transportes, pedidos externos
+rep_	Reportes	Vistas y tablas para informes
+cfg_	Configuración	Parámetros y ajustes del sistema

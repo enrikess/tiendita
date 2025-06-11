@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('proveedores', function (Blueprint $table) {
+        Schema::create('com_proveedores', function (Blueprint $table) {
             $table->id();
             $table->string('ruc',20);
             $table->string('razon_social',100);
@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('email',100);
             $table->string('persona_contacto',100);
             $table->boolean('estado')->default(true);
-            $table->foreignId('usuario_creo')->constrained('usuario');
+            $table->foreignId('usuario_creo')->constrained('sis_usuarios');
             $table->timestamp('fecha_creo')->useCurrent();
-            $table->foreignId('usuario_modifico')->nullable()->constrained('usuario');
+            $table->foreignId('usuario_modifico')->nullable()->constrained('sis_usuarios');
             $table->timestamp('fecha_modifico')->useCurrent();
             $table->boolean('eliminado')->default(false);
-            $table->foreignId('usuario_elimino')->nullable()->constrained('usuario');
+            $table->foreignId('usuario_elimino')->nullable()->constrained('sis_usuarios');
             $table->string('motivo_elimino', 100)->nullable();
             $table->timestamp('fecha_elimino')->nullable();
         });
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('proveedores');
+        Schema::dropIfExists('com_proveedores');
     }
 };

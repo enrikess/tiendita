@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\SisUsuario;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Usuario>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SisUsuario>
  */
-class UsuarioFactory extends Factory
+class SisUsuarioFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -40,5 +41,17 @@ class UsuarioFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure()
+    {
+        return $this->afterMaking(function (SisUsuario $usuario) {
+            // Código a ejecutar después de crear pero antes de guardar la instancia
+        })->afterCreating(function (SisUsuario $usuario) {
+            // Código a ejecutar después de guardar la instancia en la base de datos
+        });
     }
 }

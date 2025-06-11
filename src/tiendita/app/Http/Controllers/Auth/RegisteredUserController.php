@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Usuario;
+use App\Models\SisUsuario;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,11 +32,11 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:usuario',
+            'email' => 'required|string|lowercase|email|max:255|unique:sis_usuarios',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = Usuario::create([
+        $user = SisUsuario::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

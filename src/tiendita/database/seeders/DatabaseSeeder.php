@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuario;
+use App\Models\SisUsuario;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Usuario::factory(10)->create();
+        // Carga los tipos de documentos
+        $this->call(TipoDocumentoSeeder::class);
 
-        Usuario::factory()->create([
+        // Crea un usuario de prueba
+        SisUsuario::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Descomentar para crear usuarios aleatorios
+        // SisUsuario::factory(10)->create();
     }
 }
