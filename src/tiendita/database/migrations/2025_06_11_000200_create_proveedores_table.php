@@ -21,14 +21,14 @@ return new class extends Migration
             $table->string('email',100);
             $table->string('persona_contacto',100);
             $table->boolean('estado')->default(true);
-            $table->int('usuario_creo');
+            $table->foreignId('usuario_creo')->constrained('usuario');
             $table->timestamp('fecha_creo')->useCurrent();
-            $table->int('usuario_modifico');
+            $table->foreignId('usuario_modifico')->nullable()->constrained('usuario');
             $table->timestamp('fecha_modifico')->useCurrent();
             $table->boolean('eliminado')->default(false);
-            $table->int('usuario_elimino');
-            $table->varchar('motivo_elimino');
-            $table->timestamp('fecha_elimino');
+            $table->foreignId('usuario_elimino')->nullable()->constrained('usuario');
+            $table->string('motivo_elimino', 100)->nullable();
+            $table->timestamp('fecha_elimino')->nullable();
         });
     }
 

@@ -1,11 +1,11 @@
+
+// 0. Tabla de persona del sistema
 Table usuarios {
   id integer [pk, increment]
-  usuario varchar(50) [not null]
-  password varchar(50) [not null]
   nombre varchar(50) [not null]
   ape_paterno varchar(50) [not null]
   ape_materno varchar(50) [not null]
-  correo varchar(50) [not null]
+  correo varchar(50) [not null]//
   telefono varchar
   estado boolean [default: true]
   usuario_creo int  [ref: > usuarios.id]
@@ -18,6 +18,17 @@ Table usuarios {
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]  
 }
 
+
+// 1. Tabla de usuarios del sistema
+Table usuarios {
+  id integer [pk, increment]//
+  name varchar(50) [not null]//
+  email varchar(50) [not null]
+  password varchar(50) [not null]
+  email_verified_at varchar(50) [not null]
+}
+
+// 2. Tabla de proveedores
 Table proveedores {
   id int [pk, increment]
   ruc varchar(20) [unique, not null]
@@ -38,6 +49,7 @@ Table proveedores {
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
+// 3. Tabla de clientes
 Table clientes {
   id int [pk, increment]
   tipo_documento int  [ref: > tipo_documento.id]
@@ -53,6 +65,7 @@ Table clientes {
   fecha_creo timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
+// 4. Tabla de tipos de documento
 Table tipo_documento{
   id int [pk, increment]
   nombre varchar(50) [not null]
@@ -60,6 +73,7 @@ Table tipo_documento{
   estado boolean [default: true]
 }
 
+// 5. Tabla de categorías
 Table categorias {
   id integer [pk, increment]
   nombre varchar [not null]
@@ -67,6 +81,7 @@ Table categorias {
   estado boolean [default: true]
 }
 
+// 6. Tabla de subcategorías
 Table subcategorias {
   id integer [pk, increment]
   categoria_id int [ref: > categorias.id]
@@ -75,6 +90,7 @@ Table subcategorias {
   estado boolean [default: true]
 }
 
+// 7. Tabla de ubicaciones
 Table ubicaciones {
   id int [pk, increment]
   nombre varchar(100) [not null]
@@ -85,19 +101,22 @@ Table ubicaciones {
   estado boolean [default: true]
 }
 
-
-
+// 8. Tabla de unidades de medida
 Table unidad_medidas{
   id int [pk, increment]
   nombre varchar(50)
   abreviatura varchar(10)
   estado boolean [default: true]
 }
+
+// 9. Tabla de marcas
 Table marcas{
   id int [pk, increment]
   nombre varchar(50)
   estado boolean [default: true]
 }
+
+// 10. Tabla de productos
 Table productos {
   id int [pk, increment]
   codigo varchar
@@ -120,6 +139,7 @@ Table productos {
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
+// 11. Tabla de historial de precios
 Table precio_historicos {
   id int [pk, increment]
   id_producto int [ref: > productos.id] 
@@ -128,6 +148,7 @@ Table precio_historicos {
   fecha_final timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
+// 12. Tabla de lotes de productos
 Table lote_productos{
   id int [pk, increment]
   producto_id int [ref: > productos.id]
@@ -144,17 +165,20 @@ Table lote_productos{
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`] 
 }
 
+// 13. Tabla de stock en tienda
 Table stocks_tienda {
   producto_id int [ref: > productos.id]
   cantidad decimal(10,2) 
 }
 
+// 14. Tabla de stock en almacén detallado
 Table stocks_almacen_detallado {
   producto_id int [ref: > productos.id]
   lote_id int [ref: > lote_productos.id]
   cantidad decimal(10,2) 
 }
 
+// 15. Tabla de tipos de movimientos
 Table tipo_movimientos {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // ENTRADA, SALIDA, etc.
@@ -164,6 +188,7 @@ Table tipo_movimientos {
   estado boolean [default: true]
 }
 
+// 16. Tabla de parámetros de IGV
 Table parametros_igv {
   id int [pk, increment]
   porcentaje decimal(5,2)  
@@ -172,6 +197,7 @@ Table parametros_igv {
   activo boolean [default: true]
 }
 
+// 17. Tabla de tipos de referencia
 Table referencia_tipos {
   id int [pk, increment]
   codigo varchar(30) [unique, not null] // compra, venta, merma, ajuste, transferencia, etc.
@@ -180,7 +206,7 @@ Table referencia_tipos {
   estado boolean [default: true]
 }
 
-
+// 18. Tabla de correlativos
 Table correlativos {
   id int [pk, increment]
   tipo_documento varchar(20) [not null] // Ej: 'compra', 'venta', 'boleta', 'factura'
@@ -191,6 +217,7 @@ Table correlativos {
   estado boolean [default: true]
 }
 
+// 19. Tabla de movimientos
 Table movimientos{
   id int [pk, increment]
   numero_movimiento varchar(20) [unique] // MOV-2025-00001
@@ -214,6 +241,7 @@ Table movimientos{
   estado boolean [default: true] 
 }
 
+// 20. Tabla de detalle de movimientos
 Table detalle_movimientos {
   id int [pk, increment]
   movimiento_id int [ref: > movimientos.id]
@@ -227,6 +255,7 @@ Table detalle_movimientos {
   total decimal(10,2) // subtotal + igv_monto
 }
 
+// 21. Tabla de estados de compras
 Table estado_compras {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // PENDIENTE, RECIBIDO, ANULADO, etc.
@@ -235,6 +264,7 @@ Table estado_compras {
   estado boolean [default: true]
 }
 
+// 22. Tabla de métodos de pago
 Table metodos_pago {
   id int [pk, increment]
   nombre varchar(50) [not null] // Efectivo, Transferencia, Tarjeta, etc.
@@ -242,6 +272,7 @@ Table metodos_pago {
   estado boolean [default: true]
 }
 
+// 23. Tabla de compras
 Table compras {
   id int [pk, increment]
   numero_compra varchar(20) [unique, not null] // Ej: COMP-2025-00001
@@ -261,7 +292,7 @@ Table compras {
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
-
+// 24. Tabla de detalle de compras
 Table detalle_compras {
   id int [pk, increment]
   compra_id int [ref: > compras.id]
@@ -275,7 +306,7 @@ Table detalle_compras {
   total decimal(10,2) // subtotal + igv_monto
 }
 
-
+// 25. Tabla de estados de ventas
 Table estado_ventas {
   id int [pk, increment]
   codigo varchar(20) [unique, not null] // 'PENDIENTE', 'PAGADO', 'ANULADO'
@@ -284,7 +315,7 @@ Table estado_ventas {
   estado boolean [default: true]
 }
 
-
+// 26. Tabla de ventas
 Table ventas {
   id int [pk, increment]
   numero_venta varchar(20) [unique, not null] // Ej: VENTA-2025-00001
@@ -305,6 +336,7 @@ Table ventas {
   fecha_elimino timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
+// 27. Tabla de detalle de ventas
 Table detalle_ventas {
   id int [pk, increment]
   venta_id int [ref: > ventas.id]
@@ -317,7 +349,7 @@ Table detalle_ventas {
   total decimal(10,2) // subtotal + igv_monto
 }
 
-
+// 28. Tabla de kardex
 Table kardex {
   id int [pk, increment]
   producto_id int [ref: > productos.id]
