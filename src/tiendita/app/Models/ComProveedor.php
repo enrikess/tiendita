@@ -17,10 +17,9 @@ class ComProveedor extends Model
     protected $table = 'com_proveedores';
 
     /**
-     * Renombrar los timestamps estándar de Laravel para usar nuestros campos personalizados
+     * Desactivar los timestamps automáticos de Laravel
      */
-    const CREATED_AT = 'fecha_creo';
-    const UPDATED_AT = 'fecha_modifico';
+    public $timestamps = false;
 
     /**
      * Los atributos que son asignables masivamente.
@@ -70,19 +69,4 @@ class ComProveedor extends Model
         return $this->belongsTo(SisUsuario::class, 'usuario_elimino');
     }
 
-    /**
-     * Realiza una eliminación lógica del registro
-     *
-     * @param int $usuario_id ID del usuario que realiza la eliminación
-     * @param string|null $motivo Motivo de la eliminación
-     * @return bool
-     */
-    public function eliminarLogico($usuario_id, $motivo = null)
-    {
-        $this->eliminado = true;
-        $this->usuario_elimino = $usuario_id;
-        $this->motivo_elimino = $motivo;
-        $this->fecha_elimino = now();
-        return $this->save();
-    }
 }
