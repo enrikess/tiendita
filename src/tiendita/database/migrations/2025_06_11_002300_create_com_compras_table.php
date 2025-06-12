@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('com_compras', function (Blueprint $table) {
             $table->id();
             $table->string('numero_compra', 20)->nullable()->unique();
-            $table->foreignId('proveedor_id')->constrained('cfg_proveedores');
+            $table->foreignId('proveedor_id')->constrained('com_proveedores');
             $table->timestamp('fecha_compra')->nullable();
             $table->decimal('subtotal', 10, 2);
             $table->decimal('igv_total', 10, 2);

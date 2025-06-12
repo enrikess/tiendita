@@ -17,10 +17,6 @@ return new class extends Migration
             $table->date('fecha_inicio')->nullable(); // Fecha de inicio de vigencia
             $table->date('fecha_fin')->nullable(); // Fecha de fin de vigencia
             $table->boolean('activo')->default(true); // Indica si el parámetro está activo
-            $table->foreignId('usuario_creo')->constrained('sis_usuarios');
-            $table->timestamp('fecha_creo')->useCurrent();
-            $table->foreignId('usuario_modifico')->nullable()->constrained('sis_usuarios');
-            $table->timestamp('fecha_modifico')->nullable()->useCurrentOnUpdate();
         });
     }
 

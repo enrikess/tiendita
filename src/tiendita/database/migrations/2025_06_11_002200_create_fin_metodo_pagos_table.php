@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 50)->nullable();
             $table->string('descripcion', 100);
-            $table->string('estado', 20)->default('true'); // Estado del método de pago, por ejemplo: 'activo', 'inactivo'
+            $table->boolean('estado')->default(true); // Estado del método de pago, por ejemplo: 'activo', 'inactivo'
         });
     }
 

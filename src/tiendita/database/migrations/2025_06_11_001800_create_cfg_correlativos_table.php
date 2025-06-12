@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('tipo_documento', 50);
             $table->string('serie', 10)->default('001');
-            $table->int('anio')->default(date('Y'));
-            $table->int('ultimo_numero')->default(0);
-            $table->int('fecha_actualizacion')->default(time());
+            $table->integer('anio');
+            $table->integer('ultimo_numero')->default(0);
+            $table->timestamp('fecha_actualizacion')->useCurrent();
             $table->boolean('estado')->default(true);
         });
     }

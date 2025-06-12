@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('com_detalle_compras', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('compra_id')->constrained('com_compras.id');
-            $table->foreignId('producto_id')->constrained('inv_productos.id');
-            $table->foreingId('lote_producto_id')->nullable()->constrained('inv_lotes_productos.id');
+            $table->foreignId('compra_id')->constrained('com_compras');
+            $table->foreignId('producto_id')->constrained('inv_productos');
+            $table->foreignId('lote_producto_id')->nullable()->constrained('inv_lote_productos');
             $table->decimal('cantidad', 10, 2);
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('igv_porcentaje', 5, 2);

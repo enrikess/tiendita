@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('mov_detalle_movimientos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('movimiento_id')->constrained('mov_movimientos');
-            $table->foreignId('producto_id')->constrained('inv_productos.id');
-            $table->foreignId('lote_producto_id')->nullable()->constrained('inv_lotes_productos.id');
+            $table->foreignId('producto_id')->constrained('inv_productos');
+            $table->foreignId('lote_producto_id')->nullable()->constrained('inv_lote_productos');
             $table->decimal('cantidad', 10, 2);
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('igv_porcentaje', 5, 2);

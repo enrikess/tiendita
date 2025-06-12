@@ -59,16 +59,6 @@ class ProveedorService implements ProveedorServiceInterface
 
             // Asegurarse de que ciertos campos estén presentes
             $datos['estado'] = $datos['estado'] ?? true;
-            
-            // Asegurarse de que se registren las fechas y usuarios
-            if (!isset($datos['fecha_creo'])) {
-                $datos['fecha_creo'] = now();
-            }
-            
-            // Si el usuario no está especificado, usar el usuario autenticado
-            if (!isset($datos['usuario_creo']) && auth()->check()) {
-                $datos['usuario_creo'] = auth()->id();
-            }
 
             // Crear el proveedor
             $proveedor = $this->proveedorRepository->create($datos);
@@ -95,14 +85,6 @@ class ProveedorService implements ProveedorServiceInterface
     {
         try {
             DB::beginTransaction();
-            
-            // Asegurarse de que se registren la fecha y usuario de modificación
-            $datos['fecha_modifico'] = now();
-            
-            // Si el usuario no está especificado, usar el usuario autenticado
-            if (!isset($datos['usuario_modifico']) && auth()->check()) {
-                $datos['usuario_modifico'] = auth()->id();
-            }
 
             $resultado = $this->proveedorRepository->update($id, $datos);
 
@@ -127,16 +109,6 @@ class ProveedorService implements ProveedorServiceInterface
     {
         try {
             DB::beginTransaction();
-            
-            // Verificar si se proporcionó el ID de usuario
-            if (!$usuario_id && auth()->check()) {
-                $usuario_id = auth()->id();
-            }
-            
-            // Verificar si necesitamos añadir un motivo predeterminado
-            if (empty($motivo)) {
-                $motivo = 'Eliminación desde sistema';
-            }
 
             $resultado = $this->proveedorRepository->eliminarLogico($id, $usuario_id, $motivo);
 
