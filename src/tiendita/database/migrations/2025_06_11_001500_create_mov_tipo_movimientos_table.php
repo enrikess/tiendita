@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('codigo',20)->unique();
             $table->string('nombre',100);
-            $table->string('descripcion',255)->nullable();
-            $table->char('afecta_stock');
+            $table->text('descripcion')->nullable();
+            $table->char('afecta_stock', 1);
             $table->boolean('estado')->default(true);
         });
     }
