@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->string('apellido', 100)->nullable();
+            $table->foreignId('tipo_documento_id')->nullable()->index()->constrained('sis_tipo_documentos');
+            $table->string('numero_documento', 20)->nullable();
             $table->string('correo', 100)->nullable();
             $table->string('telefono', 20)->nullable();
+            $table->string('razon_social', 150)->nullable();
             $table->text('direccion')->nullable();
             $table->boolean('estado')->default(true);
             $table->foreignId('usuario_creo')->constrained('sis_usuarios');

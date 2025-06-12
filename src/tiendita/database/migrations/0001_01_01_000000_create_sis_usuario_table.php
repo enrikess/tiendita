@@ -17,6 +17,13 @@ return new class extends Migration
             $table->string('abreviatura', 10)->nullable();
             $table->boolean('estado')->default(true);
         });
+        // Agregar datos iniciales
+        DB::table('sis_tipo_documentos')->insert([
+            ['nombre' => 'DNI', 'abreviatura' => 'DNI'],
+            ['nombre' => 'Pasaporte', 'abreviatura' => 'PAS'],
+            ['nombre' => 'Carnet de Extranjería', 'abreviatura' => 'CE'],
+            ['nombre' => 'Registro Único de Contribuyentes', 'abreviatura' => 'RUC']
+        ]);
 
         Schema::create('sis_persona', function (Blueprint $table) {
             $table->id();
@@ -31,13 +38,6 @@ return new class extends Migration
             $table->string('fecha_nacimiento', 10)->nullable();
             $table->foreignId('genero_id')->nullable()->index()->constrained('sis_generos');
             $table->boolean('estado')->default(true);
-            $table->foreignId('usuario_creo')->nullable()->constrained('sis_usuarios');
-            $table->foreignId('usuario_modifico')->nullable()->constrained('sis_usuarios');
-            $table->timestamp('fecha_creo')->nullable();
-            $table->timestamp('fecha_modifico')->nullable();
-            $table->foreignId('usuario_elimino')->nullable()->constrained('sis_usuarios');
-            $table->timestamp('fecha_elimino')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('sis_usuarios', function (Blueprint $table) {

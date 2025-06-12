@@ -32,7 +32,7 @@ class TipoDocumentoSeeder extends Seeder
         ];
 
         foreach ($tiposDocumento as $tipoDocumento) {
-            SisTipoDocumento::create($tipoDocumento);
+            //SisTipoDocumento::create($tipoDocumento);
         }
     }
 }
