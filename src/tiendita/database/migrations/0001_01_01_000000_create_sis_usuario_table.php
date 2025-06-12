@@ -30,12 +30,12 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->string('ape_paterno', 50);
             $table->string('ape_materno', 50);
-            $table->string('correo', 50);
+            $table->string('email', 50);
             $table->foreignId('tipo_documento_id')->nullable()->index()->constrained('sis_tipo_documentos');
             $table->string('numero_documento', 20)->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 100)->nullable();
-            $table->string('fecha_nacimiento', 10)->nullable();
+            $table->date('fecha_nacimiento')->nullable();
             $table->foreignId('genero_id')->nullable()->index()->constrained('sis_generos');
             $table->boolean('estado')->default(true);
         });
