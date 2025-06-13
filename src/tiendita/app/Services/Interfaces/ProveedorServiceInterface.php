@@ -54,8 +54,8 @@ interface ProveedorServiceInterface extends ServiceInterface
     /**
      * Buscar proveedores por RUC o razón social
      *
-     * @param string $termino
+     * @param string $ruc
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function buscar($termino);
+    public function buscar($ruc);
 }

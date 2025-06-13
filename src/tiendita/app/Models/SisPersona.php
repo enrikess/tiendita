@@ -11,6 +11,8 @@ class SisPersona extends Model
 
     protected $table = 'sis_persona';
 
+
+    public $timestamps = false;
     /**
      * Los atributos que son asignables masivamente.
      *
@@ -20,7 +22,7 @@ class SisPersona extends Model
         'nombre',
         'ape_paterno',
         'ape_materno',
-        'correo',
+        'email',
         'tipo_documento_id',
         'numero_documento',
         'telefono',
@@ -28,12 +30,12 @@ class SisPersona extends Model
         'fecha_nacimiento',
         'genero_id',
         'estado',
-        'usuario_creo',
-        'usuario_modifico',
-        'fecha_creo',
-        'fecha_modifico',
-        'usuario_elimino',
-        'fecha_elimino',
+    ];
+
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
+        'estado' => 'boolean',
     ];
 
     /**
@@ -53,14 +55,6 @@ class SisPersona extends Model
     }
 
     /**
-     * Obtener el usuario asociado a esta persona
-     */
-    public function usuario()
-    {
-        return $this->hasOne(SisUsuario::class);
-    }
-
-    /**
      * Obtener el nombre completo de la persona
      */
     public function getNombreCompletoAttribute()
@@ -68,27 +62,4 @@ class SisPersona extends Model
         return "{$this->nombre} {$this->ape_paterno} {$this->ape_materno}";
     }
 
-    /**
-     * Obtener el usuario que creó esta persona
-     */
-    public function usuarioCreo()
-    {
-        return $this->belongsTo(SisUsuario::class, 'usuario_creo');
-    }
-
-    /**
-     * Obtener el usuario que modificó esta persona
-     */
-    public function usuarioModifico()
-    {
-        return $this->belongsTo(SisUsuario::class, 'usuario_modifico');
-    }
-
-    /**
-     * Obtener el usuario que eliminó esta persona
-     */
-    public function usuarioElimino()
-    {
-        return $this->belongsTo(SisUsuario::class, 'usuario_elimino');
-    }
 }

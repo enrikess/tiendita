@@ -10,6 +10,7 @@ class SisTipoDocumento extends Model
     use HasFactory;
 
     protected $table = 'sis_tipo_documentos';
+
     public $timestamps = false;
 
     /**
@@ -21,6 +22,10 @@ class SisTipoDocumento extends Model
         'nombre',
         'abreviatura',
         'estado',
+    ];
+
+    protected $casts = [
+        'estado' => 'boolean',
     ];
 
     /**

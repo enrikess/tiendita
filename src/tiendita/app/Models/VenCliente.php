@@ -16,25 +16,48 @@ class VenCliente extends Model
      */
     protected $table = 'ven_clientes';
 
+
+    public $timestamps = false;
+
     /**
      * Los atributos que son asignables masivamente.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'nombre',
+        'apellido',
         'tipo_documento_id',
         'numero_documento',
-        'nombres',
-        'apellidos',
+        'correo',
+        'telefono',
         'razon_social',
         'direccion',
-        'telefono',
-        'email',
         'estado',
         'usuario_creo',
-        'fecha_creo'
+        'fecha_creo',
+        'usuario_modifico',
+        'fecha_modifico',
+        'eliminado',
+        'usuario_elimino',
+        'motivo_elimino',
+        'fecha_elimino',
     ];
 
+
+    protected $casts = [
+        'estado' => 'boolean',
+        'eliminado' => 'boolean',
+        'fecha_creo' => 'datetime',
+        'fecha_modifico' => 'datetime',
+        'fecha_elimino' => 'datetime',
+    ];
+
+
+    public function getNombreCompletoAttribute()
+    {
+        return trim($this->nombre . ' ' . $this->apellido);
+    }
     /**
      * Relación con el tipo de documento
      */
@@ -49,5 +72,21 @@ class VenCliente extends Model
     public function usuarioCreo()
     {
         return $this->belongsTo(SisUsuario::class, 'usuario_creo');
+    }
+
+    /**
+     * Relación con el usuario que modificó el registro
+     */
+    public function usuarioModifico()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_modifico');
+    }
+
+    /**
+     * Relación con el usuario que eliminó el registro
+     */
+    public function usuarioElimino()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_elimino');
     }
 }

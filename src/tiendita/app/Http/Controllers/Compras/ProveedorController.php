@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Compras;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Proveedores\DeleteProveedorRequest;
+use App\Http\Requests\Proveedores\StoreProveedorRequest;
+use App\Http\Requests\Proveedores\UpdateProveedorRequest;
 use App\Services\Interfaces\ProveedorServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProveedorController extends Controller
 {
@@ -27,41 +31,48 @@ class ProveedorController extends Controller
     /**
      * Mostrar todos los proveedores
      *
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
         $proveedores = $this->proveedorService->todos();
-        return view('compras.proveedores.index', compact('proveedores'));
+
+        // Convertimos la colección a paginación
+        $proveedoresPaginados = new \Illuminate\Pagination\LengthAwarePaginator(
+            $proveedores->forPage($request->input('page', 1), $perPage),
+            $proveedores->count(),
+            $perPage,
+            $request->input('page', 1),
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return Inertia::render('Proveedores/Index', [
+            'proveedores' => $proveedoresPaginados,
+            'filters' => $request->only(['search', 'per_page'])
+        ]);
     }
 
     /**
      * Mostrar formulario para crear un nuevo proveedor
      *
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response
      */
     public function create()
     {
-        return view('compras.proveedores.create');
+        return Inertia::render('Proveedores/Create');
     }
 
     /**
      * Guardar un nuevo proveedor
      *
-     * @param Request $request
+     * @param \App\Http\Requests\Proveedores\StoreProveedorRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(\App\Http\Requests\Proveedores\StoreProveedorRequest $request)
     {
-        $validated = $request->validate([
-            'ruc' => 'required|string|max:11|unique:com_proveedores,ruc',
-            'razon_social' => 'required|string|max:100',
-            'nombre_comercial' => 'nullable|string|max:100',
-            'direccion' => 'nullable|string|max:200',
-            'telefono' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:100',
-            'persona_contacto' => 'nullable|string|max:100',
-        ]);
+        $validated = $request->validated();
 
         // Agregar usuario actual como creador
         $validated['usuario_creo'] = Auth::id();
@@ -70,13 +81,11 @@ class ProveedorController extends Controller
 
         return redirect()->route('proveedores.show', $proveedor)
             ->with('success', 'Proveedor creado correctamente');
-    }
-
-    /**
+    }    /**
      * Mostrar un proveedor específico
      *
      * @param int $id
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
      */
     public function show($id)
     {
@@ -87,14 +96,14 @@ class ProveedorController extends Controller
                 ->with('error', 'Proveedor no encontrado');
         }
 
-        return view('compras.proveedores.show', compact('proveedor'));
-    }
-
-    /**
+        return Inertia::render('Proveedores/Show', [
+            'proveedor' => $proveedor
+        ]);
+    }    /**
      * Mostrar formulario para editar un proveedor
      *
      * @param int $id
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
@@ -105,27 +114,21 @@ class ProveedorController extends Controller
                 ->with('error', 'Proveedor no encontrado');
         }
 
-        return view('compras.proveedores.edit', compact('proveedor'));
+        return Inertia::render('Proveedores/Edit', [
+            'proveedor' => $proveedor
+        ]);
     }
 
     /**
      * Actualizar un proveedor existente
      *
-     * @param Request $request
+     * @param \App\Http\Requests\Proveedores\UpdateProveedorRequest $request
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(\App\Http\Requests\Proveedores\UpdateProveedorRequest $request, $id)
     {
-        $validated = $request->validate([
-            'ruc' => 'required|string|max:11|unique:com_proveedores,ruc,' . $id,
-            'razon_social' => 'required|string|max:100',
-            'nombre_comercial' => 'nullable|string|max:100',
-            'direccion' => 'nullable|string|max:200',
-            'telefono' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:100',
-            'persona_contacto' => 'nullable|string|max:100',
-        ]);
+        $validated = $request->validated();
 
         // Agregar usuario actual como modificador
         $validated['usuario_modifico'] = Auth::id();
@@ -145,12 +148,13 @@ class ProveedorController extends Controller
      * Eliminar un proveedor
      *
      * @param int $id
-     * @param Request $request
+     * @param \App\Http\Requests\Proveedores\DeleteProveedorRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id, Request $request)
+    public function destroy($id, \App\Http\Requests\Proveedores\DeleteProveedorRequest $request)
     {
-        $motivo = $request->input('motivo');
+        $validated = $request->validated();
+        $motivo = $validated['motivo'];
         $resultado = $this->proveedorService->eliminar($id, Auth::id(), $motivo);
 
         if ($resultado) {
@@ -165,13 +169,31 @@ class ProveedorController extends Controller
      * Buscar proveedores
      *
      * @param Request $request
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response
      */
     public function search(Request $request)
     {
-        $termino = $request->input('termino');
-        $proveedores = $this->proveedorService->buscar($termino);
+        $ruc = $request->input('termino');
+        $perPage = $request->input('per_page', 10);
 
-        return view('compras.proveedores.index', compact('proveedores', 'termino'));
+        // Obtenemos los proveedores (colección)
+        $resultados = $this->proveedorService->buscar($ruc);
+
+        // Convertimos la colección a paginación
+        $proveedores = new \Illuminate\Pagination\LengthAwarePaginator(
+            $resultados->forPage($request->input('page', 1), $perPage),
+            $resultados->count(),
+            $perPage,
+            $request->input('page', 1),
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return Inertia::render('Proveedores/Index', [
+            'proveedores' => $proveedores,
+            'filters' => [
+                'search' => $ruc,
+                'per_page' => $perPage
+            ]
+        ]);
     }
 }

@@ -16,6 +16,8 @@ class SisGenero extends Model
      */
     protected $table = 'sis_generos';
 
+
+    public $timestamps = false;
     /**
      * Los atributos que son asignables masivamente.
      *
@@ -26,6 +28,15 @@ class SisGenero extends Model
         'nombre',
         'descripcion',
         'estado',
+    ];
+
+    /**
+     * Atributos que deben ser convertidos
+     *
+     * @var array
+     */
+    protected $casts = [
+        'estado' => 'boolean',
     ];
 
     /**

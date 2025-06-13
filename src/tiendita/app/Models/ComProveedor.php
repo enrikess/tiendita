@@ -17,11 +17,6 @@ class ComProveedor extends Model
     protected $table = 'com_proveedores';
 
     /**
-     * Desactivar los timestamps automáticos de Laravel
-     */
-    public $timestamps = false;
-
-    /**
      * Los atributos que son asignables masivamente.
      *
      * @var array<int, string>
@@ -68,5 +63,4 @@ class ComProveedor extends Model
     {
         return $this->belongsTo(SisUsuario::class, 'usuario_elimino');
     }
-
 }

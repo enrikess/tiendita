@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\ComProveedor;
+use App\Model\ComProveedor;    // Se eliminó el método buscarPorRazonSocialPaginado para simplificaredor;
 use App\Repositories\Interfaces\RepositoryInterface;
 use App\Repositories\Interfaces\LogicalDeletionInterface;
 
@@ -29,6 +29,8 @@ class ProveedorRepository extends LogicalDeletionRepository implements Repositor
             ->get();
     }
 
+    // Se eliminó el método buscarPorRucPaginado para simplificar
+
     /**
      * Buscar proveedores por razón social
      *
@@ -40,7 +42,11 @@ class ProveedorRepository extends LogicalDeletionRepository implements Repositor
         return $this->model->where('razon_social', 'like', "%{$razonSocial}%")
             ->where('eliminado', false)
             ->get();
-    }    /**
+    }
+
+    // Se eliminó el método buscarPorRazonSocialPaginado para simplificar
+
+    /**
      * Obtener proveedores activos
      *
      * @return \Illuminate\Database\Eloquent\Collection
@@ -50,5 +56,6 @@ class ProveedorRepository extends LogicalDeletionRepository implements Repositor
         return $this->model->where('estado', true)
             ->where('eliminado', false)
             ->get();
-    }    // El método eliminarLogico ahora se hereda de LogicalDeletionRepository
+    }
+
 }

@@ -124,17 +124,18 @@ class ProveedorService implements ProveedorServiceInterface
     /**
      * Buscar proveedores por RUC o razón social
      *
-     * @param string $termino
+     * @param string $ruc
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function buscar($termino)
+    public function buscar($ruc)
     {
         // Si el término parece un RUC (solo números y de cierta longitud)
-        if (is_numeric($termino) && strlen($termino) >= 8 && strlen($termino) <= 11) {
-            return $this->proveedorRepository->buscarPorRuc($termino);
+        if (is_numeric($ruc) && strlen($ruc) >= 8 && strlen($ruc) <= 11) {
+            // Búsqueda estándar
+            return $this->proveedorRepository->buscarPorRuc($ruc);
         }
 
         // Si no, buscar por razón social
-        return $this->proveedorRepository->buscarPorRazonSocial($termino);
+        return $this->proveedorRepository->buscarPorRazonSocial($ruc);
     }
 }

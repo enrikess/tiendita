@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->string('descripcion', 100)->nullable();
             $table->boolean('estado')->default(true);
-            $table->timestamps();
         });
 
         // Agregar datos iniciales

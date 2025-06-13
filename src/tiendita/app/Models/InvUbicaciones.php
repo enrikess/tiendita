@@ -17,6 +17,7 @@ class InvUbicaciones extends Model
      */
     protected $table = 'inv_ubicaciones';
 
+    public $timestamps = false;
     /**
      * Los atributos que son asignables masivamente.
      *
@@ -30,21 +31,25 @@ class InvUbicaciones extends Model
         'estado',
     ];
 
-    /**
-     * Los atributos que deben ser convertidos a tipos específicos.
-     *
-     * @var array<string, string>
-     */
+
     protected $casts = [
         'tipo' => TipoUbicacion::class,
         'estado' => 'boolean',
     ];
 
     /**
-     * Relación con la categoría de la ubicación
+     * Obtener la categoría a la que pertenece esta ubicación.
      */
     public function categoria()
     {
         return $this->belongsTo(InvCategoria::class, 'categoria_id');
+    }
+
+    /**
+     * Obtener los productos asociados a esta ubicación.
+     */
+    public function productos()
+    {
+        return $this->hasMany(InvProducto::class, 'ubicacion_id');
     }
 }

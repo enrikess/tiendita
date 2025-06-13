@@ -65,27 +65,4 @@ class SisUsuario extends Authenticatable
         return $this->belongsTo(SisPersona::class, 'persona_id');
     }
 
-    /**
-     * Relación con las personas creadas por este usuario
-     */
-    public function personasCreadas()
-    {
-        return $this->hasMany(SisPersona::class, 'usuario_creo');
-    }
-
-    /**
-     * Relación con las personas modificadas por este usuario
-     */
-    public function personasModificadas()
-    {
-        return $this->hasMany(SisPersona::class, 'usuario_modifico');
-    }
-
-    /**
-     * Relación con las personas eliminadas por este usuario
-     */
-    public function personasEliminadas()
-    {
-        return $this->hasMany(SisPersona::class, 'usuario_elimino');
-    }
 }
