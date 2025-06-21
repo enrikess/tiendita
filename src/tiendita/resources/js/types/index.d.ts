@@ -16,6 +16,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon;
     isActive?: boolean;
+    children?: NavItem[];
 }
 
 export interface SharedData extends PageProps {
@@ -37,3 +38,15 @@ export interface User {
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
+
+export interface Proveedor {
+  id?: number;
+  ruc: string;
+  razon_social: string;
+  nombre_comercial: string;
+  direccion: string;
+  telefono: string;
+  email: string;
+  persona_contacto: string;
+  estado: boolean;
+}

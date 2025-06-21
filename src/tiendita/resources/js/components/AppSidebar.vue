@@ -15,6 +15,24 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
+        title: 'Compras',
+        href: '/compras',
+        icon: LayoutGrid,
+        children: [
+            {
+                title: 'Proveedores',
+                href: '/compras/proveedores',
+                icon: LayoutGrid,
+            },
+            // Puedes añadir más subitems aquí
+             {
+                 title: 'Órdenes de Compra',
+                 href: '/compras/ordenes',
+                 icon: LayoutGrid,
+             }
+        ]
+},
+    {
         title: 'Productos',
         href: '/productos',
         icon: Package,

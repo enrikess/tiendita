@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Model\ComProveedor;    // Se eliminó el método buscarPorRazonSocialPaginado para simplificaredor;
+use App\Models\ComProveedor;
 use App\Repositories\Interfaces\RepositoryInterface;
 use App\Repositories\Interfaces\LogicalDeletionInterface;
 
