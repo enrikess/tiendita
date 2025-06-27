@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // Carga los tipos de documentos
         $this->call(TipoDocumentoSeeder::class);
-
+        $this->call(ProveedorSeeder::class);
         // Crea un usuario de prueba
         SisUsuario::factory()->create([
             'name' => 'Test User',

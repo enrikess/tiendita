@@ -35,14 +35,20 @@ class ProveedorController extends Controller
      * @param Request $request
      * @return \Inertia\Response
      */
-public function index(Request $request)
-{
-    $proveedores = $this->proveedorService->todos();
+    public function index(Request $request)
+    {
 
-    return Inertia::render('Proveedores/Index', [
-        'proveedores' => $proveedores
-    ]);
-}
+        $perPage = $request->get('per_page', 10); // Valor por defecto 10
+        $page = $request->get('page', 1);         // Valor por defecto 1
+
+        $proveedores = $this->proveedorService->paginados($perPage, $page);
+
+        return Inertia::render('Proveedores/Index', [
+            'proveedores' => $proveedores,
+            'perPage' => $perPage,
+            'page' => $page
+        ]);
+    }
 
     /**
      * Mostrar formulario para crear un nuevo proveedor
@@ -64,12 +70,10 @@ public function index(Request $request)
     {
         $validated = $request->validated();
 
-        // Agregar usuario actual como creador
-        $validated['usuario_creo'] = Auth::id();
 
         $proveedor = $this->proveedorService->crear($validated);
 
-        return redirect()->route('proveedores.show', $proveedor)
+        return redirect()->route('compras.proveedores.show', $proveedor)
             ->with('success', 'Proveedor creado correctamente');
     }    /**
      * Mostrar un proveedor específico

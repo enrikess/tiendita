@@ -3,10 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\ComProveedor;
-use App\Repositories\Interfaces\RepositoryInterface;
-use App\Repositories\Interfaces\LogicalDeletionInterface;
+use App\Repositories\Interfaces\BaseInterface;
+use App\Repositories\Interfaces\ProveedorRepositoryInterface;
 
-class ProveedorRepository extends LogicalDeletionRepository implements RepositoryInterface, LogicalDeletionInterface
+
+class ProveedorRepository extends BaseRepository implements ProveedorRepositoryInterface
 {
     /**
      * Establece el modelo para este repositorio
@@ -56,6 +57,19 @@ class ProveedorRepository extends LogicalDeletionRepository implements Repositor
         return $this->model->where('estado', true)
             ->where('eliminado', false)
             ->get();
+    }
+
+    /**
+     * Obtener proveedores paginados
+     *
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function paginados($perPage, $page)
+    {
+        return $this->model->where('eliminado', false)
+            ->orderBy('id', 'asc')
+            ->paginate($perPage, ['*'], 'page', $page);
     }
 
 }

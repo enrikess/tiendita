@@ -58,6 +58,7 @@ class StoreProveedorRequest extends FormRequest
         return [
             'ruc.required' => 'El RUC es obligatorio',
             'ruc.unique' => 'Este RUC ya está registrado',
+            'ruc.max' => 'El RUC no puede tener más de 11 caracteres',
             'razon_social.required' => 'La razón social es obligatoria',
             'direccion.required' => 'La dirección es obligatoria',
             'email.email' => 'El formato del email no es válido',

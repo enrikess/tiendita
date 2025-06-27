@@ -58,4 +58,7 @@ interface ProveedorServiceInterface extends ServiceInterface
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function buscar($ruc);
+
+
+    public function paginados($perPage, $page);
 }

@@ -57,7 +57,9 @@ onMounted(() => {
   });
 });
 </script>
+<button style="
 
+"></button>
 <template>
   <div class="space-y-1">
     <div v-for="(item, index) in items" :key="index">
@@ -65,7 +67,7 @@ onMounted(() => {
       <div v-if="item.children && item.children.length" class="menu-item">
         <button
           @click="toggleSubmenu(item.title)"
-          class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md "
+          class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md"
           :class="[
             isActive(item.href || '') ?
               'bg-primary/10 text-primary font-medium' :

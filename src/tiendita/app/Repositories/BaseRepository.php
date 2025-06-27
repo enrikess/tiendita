@@ -85,5 +85,66 @@ abstract class BaseRepository
             return $record->delete();
         }
         return false;
-    }    // Los métodos de borrado lógico se han movido a LogicalDeletionRepository
+    }
+
+        /**
+     * Eliminar lógicamente un registro
+     *
+     * @param int $id
+     * @param int $usuario_id
+     * @param string|null $motivo
+     * @return bool
+     */
+    public function eliminarLogico($id, $usuario_id, $motivo = null)
+    {
+        $record = $this->find($id);
+        if ($record) {
+            // Marcar como eliminado
+            $record->eliminado = true;
+
+            // Registrar quién eliminó y por qué
+            $record->usuario_elimino = $usuario_id;
+            $record->motivo_elimino = $motivo;
+
+            // Establecer la fecha de eliminación manualmente
+            $record->fecha_elimino = now();
+
+            // También actualizar fecha de modificación y usuario que modificó
+            $record->fecha_modifico = now();
+            $record->usuario_modifico = $usuario_id;
+
+            return $record->save();
+        }
+        return false;
+    }
+
+    /**
+     * Restaurar un registro eliminado lógicamente
+     *
+     * @param int $id
+     * @param int $usuario_id
+     * @return bool
+     */
+    public function restaurar($id, $usuario_id)
+    {
+        // Usamos where directamente para buscar incluso registros eliminados
+        $record = $this->model->where('id', $id)->first();
+
+        if ($record) {
+            // Desmarcar como eliminado
+            $record->eliminado = false;
+
+            // Actualizar información de modificación
+            $record->usuario_modifico = $usuario_id;
+            $record->fecha_modifico = now();
+
+            // Limpiar datos de eliminación
+            $record->usuario_elimino = null;
+            $record->motivo_elimino = null;
+            $record->fecha_elimino = null;
+
+            return $record->save();
+        }
+        return false;
+    }
 }

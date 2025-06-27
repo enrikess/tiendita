@@ -38,9 +38,8 @@ provide('tableId', tableId);
         }
       ]"
     >
-      <slot name="colgroup"></slot>
+      <!-- Cambia los slots nombrados por un slot por defecto -->
       <slot></slot>
-      <slot name="tfoot"></slot>
     </table>
   </div>
 </template>

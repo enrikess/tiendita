@@ -138,4 +138,16 @@ class ProveedorService implements ProveedorServiceInterface
         // Si no, buscar por razón social
         return $this->proveedorRepository->buscarPorRazonSocial($ruc);
     }
+
+        /**
+     * Obtener todos los proveedores
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function paginados($perPage = 5, $page = 1)
+    {
+        return $this->proveedorRepository->paginados($perPage, $page);
+    }
+
+
 }

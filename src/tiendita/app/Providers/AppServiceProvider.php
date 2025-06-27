@@ -10,20 +10,21 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     public function register(): void
-    {        // Registrar repositorios
+    {
+        // Registrar repositorios
         $this->app->bind(
-            \App\Repositories\Interfaces\RepositoryInterface::class,
+            \App\Repositories\Interfaces\BaseInterface::class,
             \App\Repositories\BaseRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Interfaces\LogicalDeletionInterface::class,
-            \App\Repositories\LogicalDeletionRepository::class
+            \App\Repositories\Interfaces\ProveedorRepositoryInterface::class,
+            \App\Repositories\ProveedorRepository::class
         );
 
         $this->app->bind(
-            'ProveedorRepository',
-            \App\Repositories\ProveedorRepository::class
+            \App\Repositories\Interfaces\ProductoRepositoryInterface::class,
+            \App\Repositories\ProductoRepository::class
         );
 
         // Registrar servicios

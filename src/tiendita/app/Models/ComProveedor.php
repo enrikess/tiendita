@@ -9,6 +9,7 @@ class ComProveedor extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     /**
      * Nombre de la tabla asociada al modelo
      *
