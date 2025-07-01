@@ -24,6 +24,11 @@ const mainNavItems: NavItem[] = [
                 href: '/inventario/categorias',
                 icon: LayoutGrid,
             },
+            {
+                title: 'Subcategorias',
+                href: '/inventario/subcategorias',
+                icon: LayoutGrid,
+            },
         ]
     },
     {

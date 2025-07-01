@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoDocumentoSeeder::class);
         $this->call(ProveedorSeeder::class);
         $this->call(InvCategoriaSeeder::class);
+        $this->call(InvSubcategoriaSeeder::class);
         // Crea un usuario de prueba
 
 

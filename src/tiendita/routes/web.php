@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Compras\ProveedorController;
 use App\Http\Controllers\Inventario\CategoriasController;
+use App\Http\Controllers\Inventario\SubcategoriasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -80,6 +81,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Listar todas las categorias
         Route::get('categorias', [CategoriasController::class, 'index'])
             ->name('categorias.index');
+        //Listar todas las subcategorias
+        Route::get('subcategorias', [SubcategoriasController::class, 'index'])
+            ->name('subcategorias.index');
     });
 });
 
