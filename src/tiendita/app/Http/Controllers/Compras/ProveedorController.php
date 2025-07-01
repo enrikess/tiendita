@@ -69,11 +69,11 @@ class ProveedorController extends Controller
     public function store(StoreProveedorRequest $request)
     {
         $validated = $request->validated();
-
+        $validated['usuario_creo'] = Auth::id();
 
         $proveedor = $this->proveedorService->crear($validated);
 
-        return redirect()->route('compras.proveedores.show', $proveedor)
+        return redirect()->route('compras.proveedores.index', $proveedor)
             ->with('success', 'Proveedor creado correctamente');
     }    /**
      * Mostrar un proveedor específico
@@ -124,13 +124,15 @@ class ProveedorController extends Controller
     {
         $validated = $request->validated();
 
+
         // Agregar usuario actual como modificador
         $validated['usuario_modifico'] = Auth::id();
 
         $resultado = $this->proveedorService->actualizar($id, $validated);
 
         if ($resultado) {
-            return redirect()->route('proveedores.show', $id)
+            session()->flash('success', 'Usuario creado exitosamente.');
+            return redirect()->route('compras.proveedores.index')
                 ->with('success', 'Proveedor actualizado correctamente');
         }
 
@@ -153,6 +155,29 @@ class ProveedorController extends Controller
 
         if ($resultado) {
             return redirect()->route('proveedores.index')
+                ->with('success', 'Proveedor eliminado correctamente');
+        }
+
+        return back()->with('error', 'No se pudo eliminar el proveedor');
+    }
+
+        /**
+     * Eliminado logico un proveedor
+     *
+     * @param int $id
+     * @param \App\Http\Requests\Proveedores\DeleteProveedorRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dltlogico($id, Request $request)
+    {
+        $usuario_id = auth()->id();
+        $resultado = $this->proveedorService->eliminadoLogico($id, $usuario_id);
+
+        // Obtén la página actual de la request
+        $pagina = $request->get('page', 1);
+
+        if ($resultado) {
+            return redirect()->route('compras.proveedores.index', ['page' => $pagina])
                 ->with('success', 'Proveedor eliminado correctamente');
         }
 

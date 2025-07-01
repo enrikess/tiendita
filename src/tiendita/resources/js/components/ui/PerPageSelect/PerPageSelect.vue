@@ -18,6 +18,8 @@ const localPerPage = ref(props.perPage);
 watch(localPerPage, (nuevo) => {
   emit('update:perPage', nuevo);
 });
+
+
 watch(() => props.perPage, (nuevo) => {
   localPerPage.value = nuevo;
 });

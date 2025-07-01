@@ -51,6 +51,9 @@ interface ProveedorServiceInterface extends ServiceInterface
      */
     public function eliminar($id, $usuario_id, $motivo = null);
 
+
+
+    public function eliminadoLogico($id, $usuario_id);
     /**
      * Buscar proveedores por RUC o razón social
      *

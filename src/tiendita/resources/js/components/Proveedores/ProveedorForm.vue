@@ -10,8 +10,9 @@ Emits:
   - cancel: notifica cancelación al padre
 */
 
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { router } from '@inertiajs/vue3';
 
@@ -39,6 +40,7 @@ const props = defineProps({
   }
 });
 
+
 // Permite emitir eventos personalizados 'submit' y 'cancel' al componente padre
 const emit = defineEmits(['submit', 'cancel']);
 
@@ -62,8 +64,7 @@ const submitForm = () => {
 
   // Asegúrate de que estado sea explícitamente un booleano antes de enviarlo
   const formData = {
-    ...form.value,
-    estado: Boolean(form.value.estado)
+    ...form.value
   };
 
   emit('submit', formData);
@@ -118,11 +119,9 @@ const handleCancel = () => {
     </div>
     <div class="flex items-center">
       <!-- Reemplazamos el componente Input por un checkbox nativo -->
-      <Input
-        type="checkbox"
+      <Checkbox
         id="estado"
-        :checked="form.estado"
-        @change="form.estado = $event.target.checked"
+        v-model="form.estado"
         class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
       />
       <Label for="estado" class="ml-2 block text-sm">Proveedor Activo</Label>
@@ -134,7 +133,7 @@ const handleCancel = () => {
       <!-- Botón para guardar o actualizar -->
       <button type="submit" class="px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" :disabled="isSubmitting">
         <span v-if="isSubmitting">Guardando...</span>
-        <span v-else>{{ isEditing ? 'Actualizar' : 'Guardar' }}</span>
+        <span v-else>{{ props.isEditing ? 'Actualizar' : 'Guardar' }}</span>
       </button>
     </div>
   </form>

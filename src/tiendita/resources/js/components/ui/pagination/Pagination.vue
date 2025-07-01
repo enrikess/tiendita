@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { defineProps, computed } from 'vue';
 
 const props = defineProps<{
   paginaActual: number
   totalPages: number
 }>()
 const emit = defineEmits<{
-  (e: 'cambiarPagina', page: number): void
+  (e: 'update:paginaActual', value: number): void
 }>()
 
 function goToPage(page: number) {
+
   if (page !== props.paginaActual && page >= 1 && page <= props.totalPages) {
-    emit('cambiarPagina', page)
+
+    emit('update:paginaActual', page)
   }
 }
 

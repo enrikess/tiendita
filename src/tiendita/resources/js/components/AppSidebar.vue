@@ -15,6 +15,18 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
+        title: 'Inventario',
+        href: '/inventario',
+        icon: LayoutGrid,
+            children: [
+            {
+                title: 'Categorias',
+                href: '/inventario/categorias',
+                icon: LayoutGrid,
+            },
+        ]
+    },
+    {
         title: 'Compras',
         href: '/compras',
         icon: LayoutGrid,
@@ -31,7 +43,7 @@ const mainNavItems: NavItem[] = [
                  icon: LayoutGrid,
              }
         ]
-},
+    },
     {
         title: 'Productos',
         href: '/productos',

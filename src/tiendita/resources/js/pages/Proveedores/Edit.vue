@@ -4,9 +4,27 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import ProveedorForm from '@/components/Proveedores/ProveedorForm.vue';
 import { router } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, defineProps, onMounted } from 'vue';
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 
+const props = defineProps({
+  proveedor: {
+    type: Object,
+    default: () => {}
+  },
+  isEditing: {
+    type: Boolean,
+    default: true
+  },
+  errors: {
+    type: Object,
+    default: () => ({})
+  }
+});
+
+console.log(props.proveedor,"editar");
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,24 +32,23 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/compras/proveedores',
     },
     {
-        title: 'Crear',
-        href: '/compras/proveedores/create',
+        title: 'Editar',
+        href: `/compras/proveedores/${props.proveedor.id}/edit`,
     },
 ];
+
 
 // Accede a los errores de validación
 const errors = computed(() => usePage().props.errors);
 
 const handleSubmit = (formData: any) => {
-    router.post('/compras/proveedores', formData, {
-        onSuccess: () => {
-            // Notificación o redirección si es necesario
-        }
-    });
+
+    router.put(route('compras.proveedores.update', props.proveedor.id), formData);
+
 };
 
 const handleCancel = () => {
-    router.get('/compras/proveedores');  // Este método ya está correcto
+    router.get(route('compras.proveedores.index'));  // Este método ya está correcto
 };
 </script>
 
@@ -41,8 +58,10 @@ const handleCancel = () => {
         <div class="flex h-full flex-1 flex-col gap-6  bg-white dark:bg-gray-900 p-6 shadow">
             <!-- Eliminamos el bloque de errores generales y pasamos los errores al formulario -->
             <ProveedorForm
-              @submit="handleSubmit"
-              @cancel="handleCancel"
+            :proveedor="proveedor"
+            :isEditing="true"
+            @submit="handleSubmit"
+            @cancel="handleCancel"
               :errors="errors"
             />
         </div>

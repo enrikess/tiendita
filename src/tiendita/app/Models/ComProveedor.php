@@ -41,6 +41,12 @@ class ComProveedor extends Model
         'fecha_elimino'
     ];
 
+    protected $casts = [
+        'estado' => 'boolean',
+        'fecha_creo' => 'datetime',
+        'fecha_modifico' => 'datetime',
+        'fecha_elimino' => 'datetime',
+    ];
     /**
      * Relación con el usuario que creó el registro
      */

@@ -20,10 +20,10 @@ class UpdateProveedorRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'ruc' => 'required|string|max:11|unique:com_proveedores,ruc,' . $this->route('proveedor'),
+            'ruc' => 'required|string|max:20|unique:com_proveedores,ruc,' . $this->route('id'),
             'razon_social' => 'required|string|max:100',
             'nombre_comercial' => 'nullable|string|max:100',
-            'direccion' => 'required|string|max:200',
+            'direccion' => 'nullable|string|max:200',
             'telefono' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:100',
             'persona_contacto' => 'nullable|string|max:100',
@@ -42,11 +42,13 @@ class UpdateProveedorRequest extends FormRequest
     {
         return [
             'ruc.required' => 'El RUC es obligatorio',
+            'ruc.max' => 'El RUC no puede tener más de 11 caracteres',
             'ruc.unique' => 'Este RUC ya está registrado',
             'razon_social.required' => 'La razón social es obligatoria',
-            'direccion.required' => 'La dirección es obligatoria',
+            'razon_social.max' => 'La RAZON SOCIAL no puede tener más de 100 caracteres',
+            'nombre_comercial.max' => 'El NOMRBE COMERCIAL no puede tener más de 100 caracteres',
             'email.email' => 'El formato del email no es válido',
-            'banco.required' => 'Si proporciona un número de cuenta, debe especificar el banco',
+            'persona_contacto.max' => 'La PERSONA DE CONTACTO no puede tener más de 100 caracteres',
         ];
     }
 }

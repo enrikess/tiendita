@@ -20,7 +20,7 @@ class DeleteProveedorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'motivo' => 'required|string|min:3|max:255',
+            'motivo_elimino' => 'string|min:3|max:255',
         ];
     }
 
@@ -30,8 +30,7 @@ class DeleteProveedorRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'motivo.required' => 'Debe especificar un motivo para eliminar el proveedor',
-            'motivo.min' => 'El motivo debe tener al menos 3 caracteres',
+            'motivo_elimino.min' => 'El motivo debe tener al menos 3 caracteres',
         ];
     }
 }

@@ -14,7 +14,7 @@ const props = defineProps({
   }
 });
 
-
+const emit = defineEmits(['editar', 'eliminar']);
 // Computed para saber si hay proveedores
 const hayProveedores = computed(() => props.proveedores.length > 0);
 
@@ -49,9 +49,22 @@ const hayProveedores = computed(() => props.proveedores.length > 0);
           </span>
         </TableCell>
         <TableCell align="right">
-          <div class="flex justify-end space-x-2">
-            <!-- ...acciones... -->
-          </div>
+            <div class="flex justify-end space-x-2">
+                <button
+                class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                @click="$emit('editar', proveedor)"
+                title="Editar"
+                >
+                Editar
+                </button>
+                <button
+                class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                @click="$emit('eliminar', proveedor)"
+                title="Eliminar"
+                >
+                Eliminar
+                </button>
+            </div>
         </TableCell>
       </TableRow>
       <TableRow v-if="!hayProveedores">

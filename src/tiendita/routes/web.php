@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Compras\ProveedorController;
+use App\Http\Controllers\Inventario\CategoriasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -62,9 +63,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('proveedores/{id}', [ProveedorController::class, 'update'])
             ->name('proveedores.update');
 
+        // Eliminado logico de proveedor
+        Route::post('proveedores/{id}/dltlogico', [ProveedorController::class, 'dltlogico'])
+            ->name('proveedores.dltlogico');
+
         // Eliminar un proveedor
         Route::delete('proveedores/{id}', [ProveedorController::class, 'destroy'])
             ->name('proveedores.destroy');
+    });
+});
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Grupo de rutas para el módulo de compras
+    Route::prefix('inventario')->name('iventario.')->group(function () {
+        // Listar todas las categorias
+        Route::get('categorias', [CategoriasController::class, 'index'])
+            ->name('categorias.index');
     });
 });
 
