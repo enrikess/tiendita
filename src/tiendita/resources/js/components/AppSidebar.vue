@@ -37,6 +37,11 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
         children: [
             {
+                title: 'Estado Compra',
+                href: '/compras/estado_compras',
+                icon: LayoutGrid,
+            },
+            {
                 title: 'Proveedores',
                 href: '/compras/proveedores',
                 icon: LayoutGrid,

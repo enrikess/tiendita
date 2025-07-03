@@ -17,6 +17,14 @@ return new class extends Migration
             $table->string('nombre', 50)->nullable();
             $table->string('descripcion', 100)->nullable();
             $table->boolean('estado')->default(true);
+            $table->foreignId('usuario_creo')->constrained('sis_usuarios');
+            $table->timestamp('fecha_creo')->useCurrent();
+            $table->foreignId('usuario_modifico')->nullable()->constrained('sis_usuarios');
+            $table->timestamp('fecha_modifico')->nullable()->useCurrent();
+            $table->boolean('eliminado')->default(false);
+            $table->foreignId('usuario_elimino')->nullable()->constrained('sis_usuarios');
+            $table->string('motivo_elimino', 100)->nullable();
+            $table->timestamp('fecha_elimino')->nullable();
         });
     }
 

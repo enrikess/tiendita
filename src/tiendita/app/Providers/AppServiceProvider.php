@@ -18,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \App\Repositories\Interfaces\ComEstadoCompraRepositoryInterface::class,
+            \App\Repositories\ComEstadoCompraRepository::class
+        );
+
+        $this->app->bind(
             \App\Repositories\Interfaces\ProveedorRepositoryInterface::class,
             \App\Repositories\ProveedorRepository::class
         );
@@ -28,10 +33,17 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Registrar servicios
+
+        $this->app->bind(
+            \App\Services\Interfaces\ComEstadoCompraServiceInterface::class,
+            \App\Services\ComEstadoCompraService::class
+        );
+
         $this->app->bind(
             \App\Services\Interfaces\ProveedorServiceInterface::class,
             \App\Services\ProveedorService::class
         );
+
     }
 
     /**

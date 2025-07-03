@@ -20,12 +20,16 @@ class CategoriasController extends Controller
     public function index(Request $request)
     {
         //$categorias = DB::select('SELECT * FROM inv_categorias');
+        $page = $request->get('page', 1);
 
-        $categorias = InvCategoria::all();
+        $perPage = 15;
+
+
+        $categorias = InvCategoria::paginate($perPage, ['*'], 'page', $page);
 
         return Inertia::render('Inventario/Categorias/Index',
         [
-            'categorias' => $categorias,
+            'categorias' => $categorias
         ]
     );
     }

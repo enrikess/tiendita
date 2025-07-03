@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Compras\EstadoCompraController;
 use App\Http\Controllers\Compras\ProveedorController;
 use App\Http\Controllers\Inventario\CategoriasController;
 use App\Http\Controllers\Inventario\SubcategoriasController;
@@ -36,6 +37,13 @@ Route::get('dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     // Grupo de rutas para el módulo de compras
     Route::prefix('compras')->name('compras.')->group(function () {
+
+        // Listar todos los Estado compra
+        Route::get('estado_compras', [EstadoCompraController::class, 'index'])
+            ->name('estado_compras.index');
+
+
+
         // Listar todos los proveedores
         Route::get('proveedores', [ProveedorController::class, 'index'])
             ->name('proveedores.index');
