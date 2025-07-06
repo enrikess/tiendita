@@ -13,24 +13,18 @@ import CategoriaTable  from "@/components/Inventario/Categorias/CategoriaTable.v
 console.log(props.categorias);
 
     const categorias = computed(()=> props.categorias.data ?? []);
-
-
-
     const paginaActual = props.categorias.current_page;
-
-
     const cantidadPaginas = computed(()=> {
         const paginas = [];
         for (let index = 0; index < props.categorias.last_page; index++) {
             paginas.push(index+1);
-
         }
         return paginas;
     })
 
     function cambiarPagina(pagina: Number){
         router.get(
-            route('iventario.categorias.index'),
+            route('inventario.categorias.index'),
             {page: String(pagina)}
             //{ page: nuevoValor },
             //{ preserveState: true }

@@ -85,7 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Grupo de rutas para el módulo de compras
-    Route::prefix('inventario')->name('iventario.')->group(function () {
+    Route::prefix('inventario')->name('inventario.')->group(function () {
         // Listar todas las categorias
         Route::get('categorias', [CategoriasController::class, 'index'])
             ->name('categorias.index');

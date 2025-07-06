@@ -20,8 +20,12 @@ class SubcategoriasController extends Controller
     public function index(Request $request)
     {
         //$subCategoria = DB::select('SELECT * FROM inv_subcategorias');
+        $page = $request->get('page', 1);
 
-        $subcategorias = InvSubcategoria::all();
+        $perPage = 15;
+
+
+        $subcategorias = InvSubcategoria::paginate($perPage, ['*'], 'page', $page);
 
         return Inertia::render('Inventario/Subcategorias/Index',
         [
