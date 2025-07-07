@@ -50,3 +50,11 @@ export interface Proveedor {
   persona_contacto: string;
   estado: boolean;
 }
+
+export interface Subcategoria{
+    id?: number;
+    nombre: string;
+    slug: string;
+    categoria_id: number;
+    estado: boolean;
+}

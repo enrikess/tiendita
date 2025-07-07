@@ -21,9 +21,7 @@ class SubcategoriasController extends Controller
     {
         //$subCategoria = DB::select('SELECT * FROM inv_subcategorias');
         $page = $request->get('page', 1);
-
-        $perPage = 15;
-
+        $perPage = $request->get('per_page', 5);
 
         $subcategorias = InvSubcategoria::paginate($perPage, ['*'], 'page', $page);
 
@@ -33,6 +31,6 @@ class SubcategoriasController extends Controller
         ]
     );
     }
-
+    
 
 }
