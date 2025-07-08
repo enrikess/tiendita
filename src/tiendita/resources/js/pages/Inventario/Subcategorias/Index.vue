@@ -68,11 +68,11 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </p>
                 </div>
                 <div>
-                    <Link :href="route('compras.proveedores.create')"
+                    <!-- <Link :href="route('compras.proveedores.create')"
                         class="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center hover:bg-blue-700 transition">
                     <CirclePlus class="h-5 w-5 mr-2" />
                     Nueva Subcategoria
-                    </Link>
+                    </Link> -->
                 </div>
             </div>
             <div class="flex justify-end mb-2">

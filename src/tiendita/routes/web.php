@@ -98,6 +98,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //Listar todas las subcategorias
         Route::get('subcategorias', [SubcategoriasController::class, 'index'])
             ->name('subcategorias.index');
+        //Formulario para crear un nuevo subcategoria
+        Route::get('subcategorias/create', [SubcategoriasController::class, 'create'])
+            ->name('subcategorias.create');
+        // Guardar un nuevo subcategoria
+        Route::post('subcategorias', [SubcategoriasController::class, 'store'])
+            ->name('subcategorias.store');
+
     });
 });
 
