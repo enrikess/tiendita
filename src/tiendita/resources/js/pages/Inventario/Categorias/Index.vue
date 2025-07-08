@@ -69,6 +69,22 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
 
         <div class="flex h-full flex-1 flex-col gap-6 bg-white dark:bg-gray-900 p-6 shadow">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Categorias</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mt-1">Aquí puedes gestionar las categorias de tu
+                        tienda.
+                    </p>
+                </div>
+                <div>
+                    <!-- <Link :href="route('compras.categorias.create')"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center hover:bg-blue-700 transition">
+                    <CirclePlus class="h-5 w-5 mr-2" />
+                    Nueva Categoria
+                    </Link> -->
+                </div>
+            </div>
+
 
             <div class="flex justify-end mb-2">
                 <label class="mr-2">Mostrar</label>

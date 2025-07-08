@@ -95,6 +95,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Listar todas las categorias
         Route::get('categorias', [CategoriasController::class, 'index'])
             ->name('categorias.index');
+        //Formulario para crear un nuevo categoria
+        Route::get('categorias/create', [CategoriasController::class, 'create'])
+            ->name('categorias.create');
+        // Guardar un nuevo categoria
+        Route::post('categorias', [CategoriasController::class, 'store'])
+            ->name('categorias.store');
+
+
+
+
         //Listar todas las subcategorias
         Route::get('subcategorias', [SubcategoriasController::class, 'index'])
             ->name('subcategorias.index');
