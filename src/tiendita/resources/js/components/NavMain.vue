@@ -25,13 +25,26 @@ const isActive = (href: string) => {
     if (!href) return false;
     // Obtener la URL actual
     const currentUrl = usePage().url;
-    // Dividir las URLs en segmentos
-    const currentSegments = currentUrl.split('/').filter(Boolean);
-    const hrefSegments = href.split('/').filter(Boolean);
+
+    // ✅ Separar la ruta base de los query parameters
+    const currentPath = currentUrl.split('?')[0]; // /compras/estado_compras
+    const hrefPath = href.split('?')[0]; // /compras/estado_compras
+
+    // Dividir las URLs en segmentos (sin query params)
+    const currentSegments = currentPath.split('/').filter(Boolean);
+    const hrefSegments = hrefPath.split('/').filter(Boolean);
+
+
     // Si es la raíz ("/")
-    if (href === '/' || href === '') {
+    if (hrefPath === '/' || hrefPath === '') {
         return currentUrl === '/' || currentUrl === '';
     }
+
+    // ✅ Comparación exacta de rutas (sin query params)
+    if (currentPath === hrefPath) {
+        return true;
+    }
+
     // Para enlaces de primer nivel, verificar si coinciden los primeros segmentos
     if (hrefSegments.length > 0 && currentSegments.length > 0) {
         // Primero compara el primer segmento para destacar el menú principal
@@ -42,7 +55,7 @@ const isActive = (href: string) => {
             }
             if (hrefSegments.length === 2) {
                 // Si hay más segmentos, verificar si el segundo segmento coincide
-                return currentSegments[1] === hrefSegments[1];
+                return currentSegments.length >= 2 && currentSegments[1] === hrefSegments[1];
             }
         }
     }

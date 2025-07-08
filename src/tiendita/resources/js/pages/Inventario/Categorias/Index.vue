@@ -62,54 +62,56 @@ import CategoriaTable  from "@/components/Inventario/Categorias/CategoriaTable.v
 
     <AppLayout :breadcrumbs="breadcrumbs">
 
+        <div class="flex h-full flex-1 flex-col gap-6 bg-white dark:bg-gray-900 p-6 shadow">
+
+            <div class="flex justify-end mb-2">
+                <label class="mr-2">Mostrar</label>
+                    <select v-model="perPage" class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option v-for="itemPorPagina in arrayPorPagina" :value="itemPorPagina">
+                            {{itemPorPagina}}
+                        </option>
+
+                    </select>
+                <span class="ml-2">por página</span>
+            </div>
 
 
-        <div class="flex justify-end mb-2">
-            <label class="mr-2">Mostrar</label>
-                <select v-model="perPage" class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option v-for="itemPorPagina in arrayPorPagina" :value="itemPorPagina">
-                        {{itemPorPagina}}
-                    </option>
+            <div class="relative overflow-x-auto">
+                <CategoriaTable :categoriasData="categorias" />
+            </div>
 
-                </select>
-            <span class="ml-2">por página</span>
-        </div>
-
-
-        <div class="relative overflow-x-auto">
-            <CategoriaTable :categoriasData="categorias" />
-        </div>
-
-        <nav aria-label="Page navigation example">
-            <ul class="inline-flex -space-x-px text-base h-10">
-                <li>
-                    <button
-                    :disabled="paginaActual <= 1"
-                    @click="cambiarPagina(paginaActual-1)"
-                    class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        Anterior
+            <nav aria-label="Page navigation example">
+                <ul class="inline-flex -space-x-px text-base h-10">
+                    <li>
+                        <button
+                        :disabled="paginaActual <= 1"
+                        @click="cambiarPagina(paginaActual-1)"
+                        class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Anterior
+                        </button>
+                    </li>
+                    <li v-for="pagina in cantidadPaginas">
+                    <a
+                    @click="cambiarPagina(pagina)"
+                    :class="[
+                        paginaActual === pagina ?
+                        'flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' :
+                        'flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                    ]">
+                    {{ pagina }}
+                    </a>
+                    </li>
+                    <li>
+                        <button
+                        @click="cambiarPagina(paginaActual+1)"
+                        :disabled="paginaActual >= props.categorias.last_page"
+                        class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Siguiente
                     </button>
-                </li>
-                <li v-for="pagina in cantidadPaginas">
-                <a
-                @click="cambiarPagina(pagina)"
-                :class="[
-                    paginaActual === pagina ?
-                    'flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' :
-                    'flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                ]">
-                 {{ pagina }}
-                </a>
-                </li>
-                <li>
-                    <button
-                    @click="cambiarPagina(paginaActual+1)"
-                    :disabled="paginaActual >= props.categorias.last_page"
-                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Siguiente
-                </button>
-                </li>
-            </ul>
-        </nav>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
     </AppLayout>
 </template>

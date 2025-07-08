@@ -18,7 +18,7 @@ const props = defineProps({
 const emit = defineEmits(['editar', 'eliminar']);
 // Computed para saber si hay proveedores
 const hayEstadoCompra = computed(() => props.estadoCompras.length > 0);
-console.log(props.estadoCompras);
+
 </script>
 
 <template>

@@ -75,7 +75,9 @@ class ProveedorController extends Controller
 
         return redirect()->route('compras.proveedores.index', $proveedor)
             ->with('success', 'Proveedor creado correctamente');
-    }    /**
+    }
+
+    /**
      * Mostrar un proveedor específico
      *
      * @param int $id

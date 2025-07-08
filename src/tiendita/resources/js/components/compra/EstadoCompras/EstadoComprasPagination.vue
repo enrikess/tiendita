@@ -8,12 +8,20 @@ const props = defineProps<{
   totalPages: number
 }>()
 
-const paginaActual = ref(props.paginaActual ?? 1);
+const emit = defineEmits<{
+    'update:paginaActual': [pagina: number]
+}>()
+
+function manejarCambioDePagina(nuevaPagina: number) {
+    emit('update:paginaActual',nuevaPagina);
+}
+
 </script>
 
 <template>
     <Pagination
-    v-model:paginaActual="paginaActual"
+    :paginaActual="props.paginaActual"
     :totalPages="props.totalPages ?? 1"
+    @update:paginaActual="manejarCambioDePagina"
     />
 </template>

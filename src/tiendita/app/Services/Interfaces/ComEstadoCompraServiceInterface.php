@@ -16,6 +16,15 @@ interface ComEstadoCompraServiceInterface extends ServiceInterface
      */
     public function todos();
 
+    /**
+     * Crear un nuevo Estado Compra
+     *
+     * @param array $datos
+     * @return ComEstadoCompra
+     */
+    public function crear(array $datos);
+
+
 
     public function paginados($perPage, $page);
 

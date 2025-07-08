@@ -41,6 +41,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Listar todos los Estado compra
         Route::get('estado_compras', [EstadoCompraController::class, 'index'])
             ->name('estado_compras.index');
+        // Formulario para crear un nuevo estado compra
+        Route::get('estado_compras/create', [EstadoCompraController::class, 'create'])
+            ->name('estado_compras.create');
+        // Guardar un nuevo proveedor
+        Route::post('estado_compras', [EstadoCompraController::class, 'store'])
+            ->name('estado_compras.store');
 
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Interfaces\ComEstadoCompraServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EstadoCompra\StoreEstadoCompraRequest;
 use Inertia\Inertia;
 
 class EstadoCompraController extends Controller
@@ -44,5 +45,34 @@ class EstadoCompraController extends Controller
             'perPage' => $perPage,
             'page' => $page
         ]);
+    }
+
+    /**
+     * Mostrar formulario para crear un nuevo estado compra
+     *
+     * @return \Inertia\Response
+     */
+    public function create()
+    {
+        return Inertia::render('Compra/EstadoCompras/Create');
+    }
+
+        /**
+     * Guardar un nuevo estado compra
+     *
+     * @param \App\Http\Requests\EstadoCompras\StoreEstadoComprasRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(StoreEstadoCompraRequest $request)
+    {
+
+        $validated = $request->validated();
+
+        $validated['usuario_creo'] = Auth::id();
+
+        $estadoCompras = $this->comEstadoCompraService->crear($validated);
+
+        return redirect()->route('compras.estado_compras.index')
+            ->with('success', 'Estado compras creado correctamente');
     }
 }

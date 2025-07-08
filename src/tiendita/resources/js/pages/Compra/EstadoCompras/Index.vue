@@ -7,8 +7,7 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline';
 import { defineProps, computed, ref, watch, onMounted } from 'vue';
 import { Pagination } from '@/components/ui/pagination';
 import { Alert } from '@/components/ui/alert';
-import { PerPageSelect } from '@/components/ui/PerPageSelect';
-import ProveedorModalEliminar from '@/components/Proveedores/ProveedorModalEliminar.vue';
+import EstadoComprasPorPagina  from '@/components/compra/EstadoCompras/EstadoComprasPorPagina.vue';
 import EstadoComprasTable from '@/components/compra/EstadoCompras/EstadoComprasTable.vue';
 import EstadoComprasPagination from '@/components/compra/EstadoCompras/EstadoComprasPagination.vue';
 
@@ -31,6 +30,24 @@ const props = defineProps<{
     }
 }>();
 
+console.log(props);
+console.log(page);
+// ✅ Flash messages desde usePage
+const hasFlash = computed(() => {
+  const flash = page.props.flash as { success?: string; error?: string } | undefined;
+  return !!(flash?.success || flash?.error);
+});
+
+const flashMessage = computed(() => {
+    const flash = page.props.flash as { success?: string; error?: string } | undefined;
+    return flash?.success || flash?.error || '';
+});
+
+const flashType = computed(() => {
+    const flash = page.props.flash as { success?: string; error?: string } | undefined;
+    return flash?.success ? 'success' : 'error';
+});
+
 
 //Manejando Pagina actual
 const paginaActual = ref(props.estadoCompras.current_page ?? 1);
@@ -42,21 +59,27 @@ watch(
 );
 watch(paginaActual, (nuevoValor) => {
     router.get(
-        route('compras.estadoCompras.index'),
+        route('compras.estado_compras.index'),
         { page: nuevoValor, per_page: perPageSelected.value },
         { preserveState: true }
     );
 })
 
+const optionsPerPage = [5, 10, 15, 20];
 const perPageSelected = ref(props.estadoCompras.per_page ?? 10);
 
-watch(paginaActual, (nuevoValor) => {
+function cambiaPorPagina(porPagina: number){
+    perPageSelected.value = porPagina;
+}
+
+watch(perPageSelected,(nuevoPerPage)=>{
     router.get(
-        route('compras.proveedores.index'),
-        { page: nuevoValor, per_page: perPageSelected.value },
+        route('compras.estado_compras.index'),
+        { page: 1, per_page: nuevoPerPage },
         { preserveState: true }
     );
 })
+
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -80,14 +103,29 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </p>
                 </div>
                 <div>
-                    <Link :href="route('compras.proveedores.create')"
+                    <Link :href="route('compras.estado_compras.create')"
                         class="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center hover:bg-blue-700 transition">
                     <PlusCircleIcon class="h-5 w-5 mr-2" />
                     Nuevo Estado de compras
                     </Link>
                 </div>
             </div>
+            <Alert
+                v-if="hasFlash"
+                :flashMessage="flashMessage"
+                :flashType="flashType"
+            />
+            <div class="flex justify-end mb-2">
+                <label class="mr-2">Mostrar</label>
 
+                <EstadoComprasPorPagina
+                :optionsPerPage="optionsPerPage"
+                :perPageSelected="perPageSelected"
+                @update:porPagina="cambiaPorPagina"
+                class="border rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="ml-2">por página</span>
+            </div>
             <div class="bg-gray-50 dark:bg-gray-800 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 shadow">
                 <EstadoComprasTable
                 :estadoCompras="props.estadoCompras.data"
