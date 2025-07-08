@@ -16,8 +16,8 @@ const openSubmenus = ref<Record<string, boolean>>({});
 
 // Función para alternar un submenú
 const toggleSubmenu = (title: string) => {
-    //console.log(openSubmenus.value[title]);
-    openSubmenus.value[title] = !openSubmenus.value[title];
+  //console.log(openSubmenus.value[title]);
+  openSubmenus.value[title] = !openSubmenus.value[title];
 };
 
 // Comprobar si una ruta está activa
@@ -78,58 +78,40 @@ onMounted(() => {
     <div v-for="(item, index) in items" :key="index">
       <!-- Item con submenú -->
       <div v-if="item.children && item.children.length" class="menu-item">
-        <button
-          @click="toggleSubmenu(item.title)"
-          class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md"
-          :class="[
+        <button @click="toggleSubmenu(item.title)"
+          class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md" :class="[
             isActive(item.href || '') ?
               'bg-primary/10 text-primary font-medium' :
               'text-muted-foreground hover:bg-muted hover:text-foreground'
-          ]"
-        >
+          ]">
           <component :is="item.icon" class="h-5 w-5 mr-2" />
           <span>{{ item.title }}</span>
-          <ChevronDown
-            class="ml-auto h-4 w-4 transition-transform"
-            :class="{ 'rotate-180': openSubmenus[item.title] }"
-          />
+          <ChevronDown class="ml-auto h-4 w-4 transition-transform"
+            :class="{ 'rotate-180': openSubmenus[item.title] }" />
         </button>
 
         <!-- Submenú -->
-        <div
-          v-if="openSubmenus[item.title]"
-          class="pl-8 mt-1 space-y-1"
-        >
-          <Link
-            v-for="(subItem, subIndex) in item.children"
-            :key="subIndex"
-            :href="subItem.href"
-            class="flex items-center px-3 py-2 text-sm rounded-md"
-            :class="[
+        <div v-if="openSubmenus[item.title]" class="pl-8 mt-1 space-y-1">
+          <Link v-for="(subItem, subIndex) in item.children" :key="subIndex" :href="subItem.href"
+            class="flex items-center px-3 py-2 text-sm rounded-md" :class="[
               isActive(subItem.href) ?
                 'bg-primary/10 text-primary font-medium' :
                 'text-muted-foreground hover:bg-muted hover:text-foreground'
-            ]"
-          >
-            <component :is="subItem.icon" class="h-4 w-4 mr-2" v-if="subItem.icon" />
-            {{ subItem.title }}
+            ]">
+          <component :is="subItem.icon" class="h-4 w-4 mr-2" v-if="subItem.icon" />
+          {{ subItem.title }}
           </Link>
         </div>
       </div>
 
       <!-- Item sin submenú -->
-      <Link
-        v-else
-        :href="item.href || ''"
-        class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
-        :class="[
-          isActive(item.href || '') ?
-            'bg-primary/10 text-primary font-medium' :
-            'text-muted-foreground hover:bg-muted hover:text-foreground'
-        ]"
-      >
-        <component :is="item.icon" class="h-5 w-5 mr-2" />
-        {{ item.title }}
+      <Link v-else :href="item.href || ''" class="flex items-center px-3 py-2 text-sm font-medium rounded-md" :class="[
+        isActive(item.href || '') ?
+          'bg-primary/10 text-primary font-medium' :
+          'text-muted-foreground hover:bg-muted hover:text-foreground'
+      ]">
+      <component :is="item.icon" class="h-5 w-5 mr-2" />
+      {{ item.title }}
       </Link>
     </div>
   </div>

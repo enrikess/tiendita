@@ -1,43 +1,65 @@
-<script setup lang="ts">
+<script setup>
+import { computed } from 'vue';
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
 
 // Recibir las subcategorias como prop desde el componente padre
-const props = defineProps<{
-    subcategoriasData: any
-}>()
+const props = defineProps({
+    subcategorias: {
+        type: Array,
+        default: () => []
+    },
+    isLoading: {
+        type: Boolean,
+        default: false
+    }
+});
+
+console.log(props.subcategorias);
+
+const emit = defineEmits(['editar', 'eliminar']);
+// Computed para saber si hay proveedores
+const haySubcategorias = computed(() => props.subcategorias.length > 0);
 </script>
 <template>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Id
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nombre
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Descripción
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            estado
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="subcategoria in props.subcategoriasData" :key="subcategoria.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                           {{  subcategoria.id }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{  subcategoria.nombre }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{  subcategoria.descripcion }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{  subcategoria.estado }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <Table hover bordered responsive>
+        <TableHead sticky>
+            <TableRow>
+                <TableCell header>ID</TableCell>
+                <TableCell header>Nombre</TableCell>
+                <TableCell header>Descripción</TableCell>
+                <TableCell header align="center">Estado</TableCell>
+                <TableCell header align="right">Acciones</TableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody :loading="isLoading">
+            <TableRow v-for="subcategoria in props.subcategorias" :key="subcategoria.id" striped hover>
+                <TableCell>{{ subcategoria.id }}</TableCell>
+                <TableCell>{{ subcategoria.nombre }}</TableCell>
+                <TableCell>{{ subcategoria.descripcion }}</TableCell>
+                <TableCell align="center">
+                    <span class="px-2 py-1 rounded text-xs font-medium"
+                        :class="subcategoria.estado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                        {{ subcategoria.estado ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </TableCell>
+                <TableCell align="right">
+                    <div class="flex justify-end space-x-2">
+                        <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                            @click="$emit('editar', subcategoria)" title="Editar">
+                            Editar
+                        </button>
+                        <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                            @click="$emit('eliminar', subcategoria)" title="Eliminar">
+                            Eliminar
+                        </button>
+                    </div>
+                </TableCell>
+            </TableRow>
+            <TableRow v-if="!haySubcategorias">
+                <TableCell colspan="6" class="text-center text-gray-500">
+                    No se encontraron subcategorias
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </Table>
 </template>

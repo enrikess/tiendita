@@ -1,63 +1,69 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { Subcategoria, type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { defineProps, computed, ref, watch, onMounted } from 'vue';
-import CategoriaTable  from "@/components/Inventario/Categorias/CategoriaTable.vue";
+import CategoriaTable from "@/components/Inventario/Categorias/CategoriaTable.vue";
+
+interface subcategoriasPageProps extends ShareData {
+    subcategorias: Subcategoria[];
+}
 
 // Definir las props que recibimos desde el controlador
-    const props = defineProps<{
-        categorias: any;
-    }>();
-
-
-    const categorias = computed(()=> props.categorias.data ?? []);
-    const paginaActual = ref(props.categorias.current_page);
-    const perPage = ref(props.categorias.per_page);
+const props = defineProps<{
+    categorias: any;
+}>();
+const categorias = computed(() => props.categorias.data ?? []);
+const paginaActual = ref(props.categorias.current_page);
+const perPage = ref(props.categorias.per_page);
 
 
 
-    const cantidadPaginas = computed(()=> {
-        const paginas = [];
-        for (let index = 0; index < props.categorias.last_page; index++) {
-            paginas.push(index+1);
-        }
-        return paginas;
-    })
-
-    function cambiarPagina(pagina: any){
-        router.get(
-            route('inventario.categorias.index'),
-            {
-                page: pagina,
-                per_page: perPage.value
-            }
-        );
-        paginaActual.value = pagina;
-        console.log("pagina",pagina);
+const cantidadPaginas = computed(() => {
+    const paginas = [];
+    for (let index = 0; index < props.categorias.last_page; index++) {
+        paginas.push(index + 1);
     }
+    return paginas;
+})
 
-    //COMBO DE POR PAGINA
-    const arrayPorPagina = [5, 10, 15, 20];
-
-    watch(perPage,(nuevoPerPage) =>{
-        router.get(
-            route('inventario.categorias.index'),
-            {per_page: nuevoPerPage}
-        )
-    }
-
-    );
-
-    const breadcrumbs: BreadcrumbItem[] = [
+function cambiarPagina(pagina: any) {
+    router.get(
+        route('inventario.categorias.index'),
         {
-            title: 'inventario',
-            href: '/inventario/categorias',
-        },
-    ];
+            page: pagina,
+            per_page: perPage.value
+        }
+    );
+    paginaActual.value = pagina;
+    console.log("pagina", pagina);
+}
+
+//COMBO DE POR PAGINA
+const arrayPorPagina = [5, 10, 15, 20];
+
+watch(perPage, (nuevoPerPage) => {
+    router.get(
+        route('inventario.categorias.index'),
+        { per_page: nuevoPerPage }
+    )
+}
+
+);
+
+//breadcrums
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'inventario',
+        href: '/inventario/categorias',
+    },
+];
+//metodo para eliminar
+
 </script>
 
 <template>
+
     <Head title="Categorias" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
