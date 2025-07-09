@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\InvSubcategoria;
+use App\Models\InvCategoria;
+use App\Http\Requests\Subcategoria\StoreSubcategoriaRequest;
 
 class SubcategoriasController extends Controller
 {
@@ -30,6 +32,33 @@ class SubcategoriasController extends Controller
             'subcategorias' => $subcategorias,
         ]
     );
+    }
+        public function create(){
+
+            $categorias= Invcategoria::where("estado", true)->get();
+
+        return Inertia::render('Inventario/Subcategorias/Create',[
+            
+            'categorias'=>$categorias
+        ]
+
+        );
+    }
+        public function store(StoreSubcategoriaRequest $request){
+
+            $validated=$request->validated();
+
+            $validated['usuario_creo']=Auth::id();
+            $valitaded['fecha_creo']=now();
+
+            $subCategoria= InvSubcategoria::create($validated);
+
+            return redirect()->route('inventario.subcategorias.index')
+            ->with('success','Subcategoria creada correctamente');
+
+
+            
+             
     }
     
 

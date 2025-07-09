@@ -10,6 +10,12 @@ import { CirclePlus } from 'lucide-vue-next';
 // Definir las props que recibimos desde el controlador
 const props = defineProps<{
     subcategorias: any
+    flash: {
+        success: string,
+        error: string,
+        message: string,
+        default: () => ({})
+    }
 }>();
 
 console.log(props.subcategorias, "index");
@@ -68,11 +74,24 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </p>
                 </div>
                 <div>
-                    <!-- <Link :href="route('compras.proveedores.create')"
+                    <Link :href="route('inventario.subcategorias.create')"
                         class="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center hover:bg-blue-700 transition">
                     <CirclePlus class="h-5 w-5 mr-2" />
                     Nueva Subcategoria
-                    </Link> -->
+                    </Link>
+                </div>
+            </div>
+            <div v-if="props.flash.success"
+                class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                role="alert">
+                <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-menu">{{ props.flash.success }}</span>
                 </div>
             </div>
             <div class="flex justify-end mb-2">
@@ -82,9 +101,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <option v-for="itemPorPagina in arrayPorPagina" :value="itemPorPagina">
                         {{ itemPorPagina }}
                     </option>
-
                 </select>
-
                 <span class="ml-2">por página</span>
             </div>
             <div class="relative overflow-x-auto">
@@ -103,7 +120,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 paginaActual === pagina ?
                                     'flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' :
                                     'flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-
                             ]">
                                 {{ pagina }}
                             </a>
