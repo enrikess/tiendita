@@ -105,9 +105,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //Formulario para crear un nuevo categoria
         Route::get('categorias/create', [CategoriasController::class, 'create'])
             ->name('categorias.create');
-        // Guardar un nuevo categoria
+        // Guardar un nuevo 
         Route::post('categorias', [CategoriasController::class, 'store'])
             ->name('categorias.store');
+            // Formulario para editar un categoria existent
+        Route::get('categorias/{id}/edit', [CategoriasController::class, 'edit'])
+            ->name('categorias.edit');
+            // Actualizar un categoria existente
+        Route::put('categorias/{id}', [CategoriasController::class, 'update'])
+            ->name('categorias.update');
+        
 
 
 
@@ -121,7 +128,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Guardar un nuevo subcategoria
         Route::post('subcategorias', [SubcategoriasController::class, 'store'])
             ->name('subcategorias.store');
-
+            // Formulario para editar un subcategoria existent
+        Route::get('subcategorias/{id}/edit', [SubcategoriasController::class, 'edit'])
+            ->name('subcategorias.edit');
+            // Actualizar un subcategoria existente
+        Route::put('subcategorias/{id}', [SubcategoriasController::class, 'update'])
+            ->name('subcategorias.update');
     });
 });
 
