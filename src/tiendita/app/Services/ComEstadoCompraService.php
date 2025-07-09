@@ -34,7 +34,18 @@ class ComEstadoCompraService implements ComEstadoCompraServiceInterface
         return $this->comEstadoCompraRepository->all();
     }
 
-        /**
+    /**
+     * Obtener un estado compra por su ID
+     *
+     * @param int $id
+     * @return \App\Models\ComEstadoCompra|null
+     */
+    public function obtenerPorId($id)
+    {
+        return $this->comEstadoCompraRepository->find($id);
+    }
+
+    /**
      * Crear un nuevo estado compra
      *
      * @param array $datos
@@ -62,6 +73,31 @@ class ComEstadoCompraService implements ComEstadoCompraServiceInterface
             throw $e;
         }
     }
+
+        /**
+     * Actualizar un estado compra existente
+     *
+     * @param int $id
+     * @param array $datos
+     * @return bool
+     */
+    public function actualizar($id, array $datos)
+    {
+        try {
+            DB::beginTransaction();
+
+            $resultado = $this->comEstadoCompraRepository->update($id, $datos);
+
+            DB::commit();
+            return $resultado;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error al actualizar estado compra: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+
     /**
      * Obtener todos los comEstadoCompra
      *

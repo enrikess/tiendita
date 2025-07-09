@@ -5,6 +5,10 @@ const props = defineProps<{
     categoriasData: any
 }>()
 
+
+const emit = defineEmits(['editar', 'eliminar']);
+
+
 </script>
 
 <template>
@@ -23,6 +27,9 @@ const props = defineProps<{
                     <th scope="col" class="px-6 py-3">
                         Estado
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        Acciones
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -37,7 +44,21 @@ const props = defineProps<{
                         {{ categoria.descripcion }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ categoria.estado }}
+                        <span
+                            class="px-2 py-1 rounded text-xs font-medium"
+                            :class="categoria.estado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                        >
+                            {{ categoria.estado ? 'Activo' : 'Inactivo' }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <button
+                        class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        @click="$emit('editar', categoria)"
+                        title="Editar"
+                        >
+                        Editar
+                        </button>
                     </td>
                 </tr>
             </tbody>

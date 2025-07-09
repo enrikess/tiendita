@@ -39,6 +39,20 @@ export interface User {
 
 export type BreadcrumbItemType = BreadcrumbItem;
 
+export interface EstadoCompra {
+    id?: number;
+    codigo: string;
+    nombre: string;
+    descripcion?: string;
+    estado: boolean;
+    // Campos de auditoría
+    usuario_creo?: number;
+    fecha_creo?: string;
+    usuario_modifico?: number;
+    fecha_modifico?: string;
+
+}
+
 export interface Proveedor {
   id?: number;
   ruc: string;

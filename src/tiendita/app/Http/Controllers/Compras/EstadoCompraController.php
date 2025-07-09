@@ -69,10 +69,61 @@ class EstadoCompraController extends Controller
         $validated = $request->validated();
 
         $validated['usuario_creo'] = Auth::id();
+        $validated['fecha_creo'] = now();
 
         $estadoCompras = $this->comEstadoCompraService->crear($validated);
 
         return redirect()->route('compras.estado_compras.index')
             ->with('success', 'Estado compras creado correctamente');
+    }
+
+    /**
+     * Mostrar formulario para editar un estado compra
+     *
+     * @param int $id
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function edit($id)
+    {
+        $estadoCompra = $this->comEstadoCompraService->obtenerPorId($id);
+
+
+        if (!$estadoCompra) {
+            return redirect()->route('compras.estado_compras.index')
+                ->with('error', 'Estado compras no encontrado');
+        }
+
+        return Inertia::render('Compra/EstadoCompras/Edit', [
+            'estadoCompra' => $estadoCompra
+        ]);
+    }
+
+    /**
+     * Actualizar un proveedor existente
+     *
+     * @param \App\Http\Requests\EstadoCompra\UpdateEstadoCompraRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateEstadoCompraRequest $request, $id)
+    {
+
+        $validated = $request->validated();
+
+
+        // Agregar usuario actual como modificador
+        $validated['usuario_modifico'] = Auth::id();
+        $validated['fecha_modifico'] = now();
+
+
+        $resultado = $this->proveedorService->actualizar($id, $validated);
+
+        if ($resultado) {
+            return redirect()->route('compras.estado_compras.index')
+                ->with('success', 'Estado Compra actualizado correctamente');
+        }
+
+        return back()->withInput()
+            ->with('error', 'No se pudo actualizar el Estado Compra');
     }
 }

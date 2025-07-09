@@ -4,7 +4,7 @@ namespace App\Http\Requests\EstadoCompra;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEstadoCompraRequest extends FormRequest
+class UpdateEstadoCompraRequest extends FormRequest
 {
     /**
      * Determina si el usuario está autorizado para hacer esta petición.
@@ -29,7 +29,8 @@ class StoreEstadoCompraRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'codigo' => 'required|string|max:20|unique:com_estado_compras,codigo,NULL,id,eliminado,false',
+            //unique:tabla,columna,excluir_id,nombre_columna_id,campo_where,valor_where
+            'codigo' => 'required|string|max:20|unique:com_estado_compras,codigo,' . $this->route('id'). ',id,eliminado,false',
             'nombre' => 'required|string|max:50',
             'descripcion' => 'nullable|string|max:100',
             'estado' => 'boolean|sometimes',

@@ -4,6 +4,8 @@ import { Subcategoria, type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { defineProps, computed, ref, watch, onMounted } from 'vue';
 import CategoriaTable from "@/components/Inventario/Categorias/CategoriaTable.vue";
+import { CirclePlus } from 'lucide-vue-next';
+
 
 interface subcategoriasPageProps extends ShareData {
     subcategorias: Subcategoria[];
@@ -11,7 +13,13 @@ interface subcategoriasPageProps extends ShareData {
 
 // Definir las props que recibimos desde el controlador
 const props = defineProps<{
-    categorias: any;
+    categorias: any,
+    flash: {
+        success:string,
+        error:string,
+        message:string,
+        default: () => ({})
+    }
 }>();
 const categorias = computed(() => props.categorias.data ?? []);
 const paginaActual = ref(props.categorias.current_page);
@@ -68,6 +76,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
 
+
+
         <div class="flex h-full flex-1 flex-col gap-6 bg-white dark:bg-gray-900 p-6 shadow">
             <div class="flex justify-between items-center">
                 <div>
@@ -77,14 +87,23 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </p>
                 </div>
                 <div>
-                    <!-- <Link :href="route('compras.categorias.create')"
+                    <Link :href="route('inventario.categorias.create')"
                         class="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center hover:bg-blue-700 transition">
                     <CirclePlus class="h-5 w-5 mr-2" />
                     Nueva Categoria
-                    </Link> -->
+                    </Link>
                 </div>
             </div>
 
+            <div v-if="props.flash.success" class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+                <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">{{ props.flash.success }}</span>
+                </div>
+            </div>
 
             <div class="flex justify-end mb-2">
                 <label class="mr-2">Mostrar</label>

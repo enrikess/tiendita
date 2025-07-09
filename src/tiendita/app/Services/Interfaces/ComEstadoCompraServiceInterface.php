@@ -17,6 +17,14 @@ interface ComEstadoCompraServiceInterface extends ServiceInterface
     public function todos();
 
     /**
+     * Obtener un estados compra por su ID
+     *
+     * @param int $id
+     * @return ComEstadoCompra|null
+     */
+    public function obtenerPorId($id);
+
+    /**
      * Crear un nuevo Estado Compra
      *
      * @param array $datos
@@ -24,6 +32,14 @@ interface ComEstadoCompraServiceInterface extends ServiceInterface
      */
     public function crear(array $datos);
 
+    /**
+     * Actualizar un Estado Compra existente
+     *
+     * @param int $id
+     * @param array $datos
+     * @return bool
+     */
+    public function actualizar($id, array $datos);
 
 
     public function paginados($perPage, $page);

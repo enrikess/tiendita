@@ -47,6 +47,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Guardar un nuevo proveedor
         Route::post('estado_compras', [EstadoCompraController::class, 'store'])
             ->name('estado_compras.store');
+        // Formulario para editar un estado compra existente
+        Route::get('estado_compras/{id}/edit', [EstadoCompraController::class, 'edit'])
+            ->name('estado_compras.edit');
+        // Actualizar un estado compra existente
+        Route::put('estado_compras/{id}', [EstadoCompraController::class, 'update'])
+            ->name('estado_compras.update');
+
 
 
 
