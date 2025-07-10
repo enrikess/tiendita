@@ -1,22 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
 
 // Recibir las subcategorias como prop desde el componente padre
-const props = defineProps({
-    subcategorias: {
-        type: Array,
-        default: () => []
-    },
-    isLoading: {
-        type: Boolean,
-        default: false
-    }
-});
+const props = defineProps<{
+    subcategorias: any,
+    isLoading?: boolean
+}>();
 
 console.log(props.subcategorias);
 
-const emit = defineEmits(['editar', 'eliminar']);
+const emit = defineEmits(['editar']);
+
+function clickEditar(Subcategoria: any) {
+    emit("editar", Subcategoria);
+}
+
 // Computed para saber si hay proveedores
 const haySubcategorias = computed(() => props.subcategorias.length > 0);
 </script>
@@ -45,18 +44,18 @@ const haySubcategorias = computed(() => props.subcategorias.length > 0);
                 <TableCell align="right">
                     <div class="flex justify-end space-x-2">
                         <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                            @click="$emit('editar', subcategoria)" title="Editar">
+                            @click="clickEditar(subcategoria)" title="Editar">
                             Editar
                         </button>
-                        <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                            @click="$emit('eliminar', subcategoria)" title="Eliminar">
+                        <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition" @click=""
+                            title="Eliminar">
                             Eliminar
                         </button>
                     </div>
                 </TableCell>
             </TableRow>
             <TableRow v-if="!haySubcategorias">
-                <TableCell colspan="6" class="text-center text-gray-500">
+                <TableCell :colspan="6" class="text-center text-gray-500">
                     No se encontraron subcategorias
                 </TableCell>
             </TableRow>

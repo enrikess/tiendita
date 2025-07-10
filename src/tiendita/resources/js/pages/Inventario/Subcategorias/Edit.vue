@@ -8,6 +8,7 @@ import { defineProps, computed, ref, watch } from 'vue';
 // Definir las props que recibimos desde el controlador
 const props = defineProps<{
     subcategorias?: {
+        id: number,
         categoria_id: number,
         nombre: string,
         descripcion: string,
@@ -45,7 +46,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 function submitForm() {
-    router.post(route('inventario.subcategorias.store'), form.value);
+    router.put(route('inventario.subcategorias.update', props.subcategorias?.id), form.value);
 };
 
 const handleCancel = () => {

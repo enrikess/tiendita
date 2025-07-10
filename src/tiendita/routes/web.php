@@ -114,12 +114,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // Actualizar un categoria existente
         Route::put('categorias/{id}', [CategoriasController::class, 'update'])
             ->name('categorias.update');
+            // Eliminado logico de categoria
+        Route::post('categorias/{id}/dltlogico', [CategoriasController::class, 'dltlogico'])
+            ->name('categorias.dltlogico');
+            // Eliminar un categoria
+        Route::delete('categorias/{id}', [CategoriasController::class, 'destroy'])
+            ->name('categorias.destroy');
         
 
 
-
-
-        //Listar todas las subcategorias
+            //Listar todas las subcategorias
         Route::get('subcategorias', [SubcategoriasController::class, 'index'])
             ->name('subcategorias.index');
         //Formulario para crear un nuevo subcategoria
@@ -134,6 +138,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // Actualizar un subcategoria existente
         Route::put('subcategorias/{id}', [SubcategoriasController::class, 'update'])
             ->name('subcategorias.update');
+            // Eliminado logico de subcategorias
+        Route::post('subcategorias/{id}/dltlogico', [SubcategoriasController::class, 'dltlogico'])
+            ->name('subcategorias.dltlogico');
+            // Eliminar un subcategorias
+        Route::delete('subcategorias/{id}', [SubcategoriasController::class, 'destroy'])
+            ->name('subcategorias.destroy');
     });
 });
 
