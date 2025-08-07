@@ -70,7 +70,7 @@ class ProveedorController extends Controller
     {
         $validated = $request->validated();
         $validated['usuario_creo'] = Auth::id();
-
+        $validated['fecha_creo'] = now();
         $proveedor = $this->proveedorService->crear($validated);
 
         return redirect()->route('compras.proveedores.index', $proveedor)
@@ -125,10 +125,8 @@ class ProveedorController extends Controller
     public function update(UpdateProveedorRequest $request, $id)
     {
         $validated = $request->validated();
-
-
-        // Agregar usuario actual como modificador
         $validated['usuario_modifico'] = Auth::id();
+        $validated['fecha_modifico'] = now();
 
         $resultado = $this->proveedorService->actualizar($id, $validated);
 
@@ -173,7 +171,10 @@ class ProveedorController extends Controller
     public function dltlogico($id, Request $request)
     {
         $usuario_id = auth()->id();
-        $resultado = $this->proveedorService->eliminadoLogico($id, $usuario_id);
+        $motivo = $request->input('motivo', 'Eliminado desde interfaz');
+        
+        // Usar el método simple del servicio que delega al BaseRepository
+        $resultado = $this->proveedorService->eliminadoLogico($id, $usuario_id, $motivo);
 
         // Obtén la página actual de la request
         $pagina = $request->get('page', 1);

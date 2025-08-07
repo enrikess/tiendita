@@ -32,8 +32,12 @@ class ComEstadoCompra extends Model
 
     protected $casts = [
         'estado' => 'boolean',
+        'eliminado' => 'boolean',
+        'usuario_creo' => 'integer',
         'fecha_creo' => 'datetime',
+        'usuario_modifico' => 'integer',
         'fecha_modifico' => 'datetime',
+        'usuario_elimino' => 'integer',
         'fecha_elimino' => 'datetime',
     ];
 

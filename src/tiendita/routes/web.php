@@ -53,6 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Actualizar un estado compra existente
         Route::put('estado_compras/{id}', [EstadoCompraController::class, 'update'])
             ->name('estado_compras.update');
+        Route::post('estado_compras/{id}/dltlogico', [EstadoCompraController::class, 'dltlogico'])
+            ->name('estado_compras.dltlogico');
 
 
 

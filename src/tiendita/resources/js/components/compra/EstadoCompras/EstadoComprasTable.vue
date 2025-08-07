@@ -23,6 +23,10 @@ function editarEstadoCompra(estadoCompra: object) {
     emit("editar",estadoCompra);
 }
 
+function eliminarEstadoCompra(estadoCompra: object) {
+    emit("eliminar", estadoCompra);
+}
+
 </script>
 
 <template>
@@ -64,7 +68,7 @@ function editarEstadoCompra(estadoCompra: object) {
                 </button>
                 <button
                 class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                @click="$emit('eliminar', estadoCompra)"
+                @click="eliminarEstadoCompra(estadoCompra)"
                 title="Eliminar"
                 >
                 Eliminar

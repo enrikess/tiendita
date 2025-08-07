@@ -107,4 +107,29 @@ class ComEstadoCompraService implements ComEstadoCompraServiceInterface
     {
         return $this->comEstadoCompraRepository->paginados($perPage, $page);
     }
+
+    /**
+     * Eliminar lógicamente un estado compra
+     *
+     * @param int $id
+     * @param int $usuario_id
+     * @param string|null $motivo
+     * @return bool
+     */
+    public function eliminadoLogico($id, $usuario_id, $motivo = null)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Usar directamente el método eliminarLogico del BaseRepository
+            $resultado = $this->comEstadoCompraRepository->eliminarLogico($id, $usuario_id, $motivo);
+
+            DB::commit();
+            return $resultado;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error al eliminar estado compra: ' . $e->getMessage());
+            throw $e;
+        }
+    }
 }

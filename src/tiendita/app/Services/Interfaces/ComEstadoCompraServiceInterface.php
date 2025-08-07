@@ -44,5 +44,15 @@ interface ComEstadoCompraServiceInterface extends ServiceInterface
 
     public function paginados($perPage, $page);
 
+    /**
+     * Eliminar lógicamente un Estado Compra con datos completos
+     *
+     * @param int $id
+     * @param int $usuario_id
+     * @param string|null $motivo
+     * @return bool
+     */
+    public function eliminadoLogico($id, $usuario_id, $motivo = null);
+
 
 }

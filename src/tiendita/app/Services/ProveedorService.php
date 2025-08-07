@@ -128,12 +128,13 @@ class ProveedorService implements ProveedorServiceInterface
      * @param string|null $motivo
      * @return bool
      */
-    public function eliminadoLogico($id, $usuario_id)
+    public function eliminadoLogico($id, $usuario_id, $motivo = null)
     {
         try {
             DB::beginTransaction();
 
-            $resultado = $this->proveedorRepository->eliminarLogico($id, $usuario_id);
+            // Usar directamente el método eliminarLogico del BaseRepository
+            $resultado = $this->proveedorRepository->eliminarLogico($id, $usuario_id, $motivo);
 
             DB::commit();
             return $resultado;

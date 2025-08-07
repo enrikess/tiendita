@@ -51,9 +51,16 @@ interface ProveedorServiceInterface extends ServiceInterface
      */
     public function eliminar($id, $usuario_id, $motivo = null);
 
-
-
-    public function eliminadoLogico($id, $usuario_id);
+    /**
+     * Eliminar lógicamente un proveedor con datos completos
+     *
+     * @param int $id
+     * @param int $usuario_id
+     * @param string|null $motivo
+     * @return bool
+     */
+    public function eliminadoLogico($id, $usuario_id, $motivo = null);
+    
     /**
      * Buscar proveedores por RUC o razón social
      *

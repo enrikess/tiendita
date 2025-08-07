@@ -7,6 +7,7 @@ use App\Services\Interfaces\ComEstadoCompraServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EstadoCompra\StoreEstadoCompraRequest;
+use App\Http\Requests\EstadoCompra\UpdateEstadoCompraRequest;
 use Inertia\Inertia;
 
 class EstadoCompraController extends Controller
@@ -60,7 +61,7 @@ class EstadoCompraController extends Controller
         /**
      * Guardar un nuevo estado compra
      *
-     * @param \App\Http\Requests\EstadoCompras\StoreEstadoComprasRequest $request
+     * @param \App\Http\Requests\EstadoCompra\StoreEstadoCompraRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreEstadoCompraRequest $request)
@@ -99,7 +100,7 @@ class EstadoCompraController extends Controller
     }
 
     /**
-     * Actualizar un proveedor existente
+     * Actualizar estado de compra existente
      *
      * @param \App\Http\Requests\EstadoCompra\UpdateEstadoCompraRequest $request
      * @param int $id
@@ -110,13 +111,12 @@ class EstadoCompraController extends Controller
 
         $validated = $request->validated();
 
-
         // Agregar usuario actual como modificador
         $validated['usuario_modifico'] = Auth::id();
         $validated['fecha_modifico'] = now();
 
 
-        $resultado = $this->proveedorService->actualizar($id, $validated);
+        $resultado = $this->comEstadoCompraService->actualizar($id, $validated);
 
         if ($resultado) {
             return redirect()->route('compras.estado_compras.index')
@@ -125,5 +125,32 @@ class EstadoCompraController extends Controller
 
         return back()->withInput()
             ->with('error', 'No se pudo actualizar el Estado Compra');
+    }
+
+
+    /**
+     * Eliminado logico un estado de compra
+     *
+     * @param int $id
+     * @param \App\Http\Requests\EstadoCompras\DeleteEstadoCompraRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dltlogico($id, Request $request)
+    {
+        $usuario_id = auth()->id();
+        $motivo = $request->input('motivo', 'Eliminado desde interfaz');
+        
+        // Usar el método simple del servicio que delega al BaseRepository
+        $resultado = $this->comEstadoCompraService->eliminadoLogico($id, $usuario_id, $motivo);
+
+        // Obtén la página actual de la request
+        $pagina = $request->get('page', 1);
+
+        if ($resultado) {
+            return redirect()->route('compras.estado_compras.index', ['page' => $pagina])
+                ->with('success', 'Estado de compra eliminado correctamente');
+        }
+
+        return back()->with('error', 'No se pudo eliminar el estado de compra');
     }
 }

@@ -7,6 +7,7 @@ import { defineProps, ref, watch } from 'vue';
 import EstadoComprasPorPagina  from '@/components/compra/EstadoCompras/EstadoComprasPorPagina.vue';
 import EstadoComprasTable from '@/components/compra/EstadoCompras/EstadoComprasTable.vue';
 import EstadoComprasPagination from '@/components/compra/EstadoCompras/EstadoComprasPagination.vue';
+import EstadoComprasModalEliminar from '@/components/compra/EstadoCompras/EstadoComprasModalEliminar.vue';
 
 
 // Definir las props que recibimos desde el controlador
@@ -70,8 +71,23 @@ function editarEstadoCompras(estadoCompra:EstadoCompra) {
     );
 }
 
+const mostrarModalEliminar = ref(false);
+const estadoCompraAEliminar = ref<Object | undefined>(undefined);
 
 
+function eliminarEstadoCompra(estadoCompra: any) {
+    estadoCompraAEliminar.value = estadoCompra;
+    mostrarModalEliminar.value = true;
+    console.log('Eliminar estado de compra:', estadoCompra);
+}
+
+function confirmarElimEstadoCompra(estadoCompra: any) {
+    mostrarModalEliminar.value = false;
+    router.post(
+        route('compras.estado_compras.dltlogico', { id: estadoCompra.id, page: paginaActual.value })
+    );
+
+}
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Estado Compra',
@@ -124,6 +140,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <EstadoComprasTable
                 :estadoCompras="props.estadoCompras.data"
                 @editar="editarEstadoCompras"
+                @eliminar="eliminarEstadoCompra"
                 />
                 <div v-if="props.estadoCompras.links && props.estadoCompras.links.length" class="mt-4 flex justify-center">
                     <EstadoComprasPagination
@@ -134,5 +151,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
         </div>
     </AppLayout>
-
+    <EstadoComprasModalEliminar
+        v-if="mostrarModalEliminar"
+        v-model="mostrarModalEliminar"
+        :estadoCompra="estadoCompraAEliminar"
+        @eliminar="confirmarElimEstadoCompra"
+    />
 </template>

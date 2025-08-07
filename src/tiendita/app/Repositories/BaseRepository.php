@@ -53,6 +53,16 @@ abstract class BaseRepository
      */
     public function create(array $data)
     {
+        // Asegurar que siempre se establezca la fecha de creación
+        if (!isset($data['fecha_creo'])) {
+            $data['fecha_creo'] = now();
+        }
+        
+        // El usuario_creo debe ser enviado por el controlador
+        if (!isset($data['usuario_creo'])) {
+            throw new \InvalidArgumentException('El campo usuario_creo es requerido para crear registros');
+        }
+        
         return $this->model->create($data);
     }
 
@@ -67,6 +77,17 @@ abstract class BaseRepository
     {
         $record = $this->find($id);
         if ($record) {
+            // Asegurar que siempre se actualice la fecha de modificación
+            if (!isset($data['fecha_modifico'])) {
+                $data['fecha_modifico'] = now();
+            }
+            
+            // El usuario_modifico debe ser enviado por el controlador
+            // Si no se especifica, lanzar una excepción para alertar al desarrollador
+            if (!isset($data['usuario_modifico'])) {
+                throw new \InvalidArgumentException('El campo usuario_modifico es requerido para actualizar registros');
+            }
+            
             return $record->update($data);
         }
         return false;
@@ -97,25 +118,19 @@ abstract class BaseRepository
      */
     public function eliminarLogico($id, $usuario_id, $motivo = null)
     {
-        $record = $this->find($id);
-        if ($record) {
-            // Marcar como eliminado
-            $record->eliminado = true;
+        // Preparar los datos de eliminación completos
+        $datosEliminacion = [
+            'eliminado' => true,
+            'usuario_elimino' => $usuario_id,
+            'motivo_elimino' => $motivo,
+            'fecha_elimino' => now(),
+            // También actualizar campos de modificación
+            'usuario_modifico' => $usuario_id,
+            'fecha_modifico' => now()
+        ];
 
-            // Registrar quién eliminó y por qué
-            $record->usuario_elimino = $usuario_id;
-            $record->motivo_elimino = $motivo;
-
-            // Establecer la fecha de eliminación manualmente
-            $record->fecha_elimino = now();
-
-            // También actualizar fecha de modificación y usuario que modificó
-            $record->fecha_modifico = now();
-            $record->usuario_modifico = $usuario_id;
-
-            return $record->save();
-        }
-        return false;
+        // Usar el método update para mantener consistencia y validaciones
+        return $this->update($id, $datosEliminacion);
     }
 
     /**
@@ -127,24 +142,25 @@ abstract class BaseRepository
      */
     public function restaurar($id, $usuario_id)
     {
-        // Usamos where directamente para buscar incluso registros eliminados
+        // Buscar incluso registros eliminados para poder restaurarlos
         $record = $this->model->where('id', $id)->first();
-
-        if ($record) {
-            // Desmarcar como eliminado
-            $record->eliminado = false;
-
-            // Actualizar información de modificación
-            $record->usuario_modifico = $usuario_id;
-            $record->fecha_modifico = now();
-
-            // Limpiar datos de eliminación
-            $record->usuario_elimino = null;
-            $record->motivo_elimino = null;
-            $record->fecha_elimino = null;
-
-            return $record->save();
+        
+        if (!$record) {
+            return false;
         }
-        return false;
+
+        // Preparar los datos de restauración
+        $datosRestauracion = [
+            'eliminado' => false,
+            'usuario_elimino' => null,
+            'motivo_elimino' => null,
+            'fecha_elimino' => null,
+            // Actualizar campos de modificación
+            'usuario_modifico' => $usuario_id,
+            'fecha_modifico' => now()
+        ];
+
+        // Actualizar directamente sin usar el método update() ya que este busca solo registros no eliminados
+        return $record->update($datosRestauracion);
     }
 }

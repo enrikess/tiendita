@@ -53,13 +53,12 @@ const isSubmitting = ref(false);
 const handleSubmit = () => {
     isSubmitting.value = true;
     console.log(form);
-    //form.post(route('compras.estado_compras.store'));
-    router.post(route('compras.estado_compras.store'), form.value,{
+    
+    router.put(route('compras.estado_compras.update', props.estadoCompra.id), form.value, {
         onFinish: () => {
             isSubmitting.value = false;
         }
     });
-
 };
 
 const handleCancel = () => {
