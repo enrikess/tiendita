@@ -54,21 +54,6 @@ const mainNavItems: NavItem[] = [
             }
         ]
     },
-    {
-        title: 'Productos',
-        href: '/productos',
-        icon: Package,
-    },
-    {
-        title: 'Ventas',
-        href: '/ventas',
-        icon: ShoppingCart,
-    },
-    {
-        title: 'Clientes',
-        href: '/clientes',
-        icon: Users,
-    },
 ];
 
 const footerNavItems: NavItem[] = [
